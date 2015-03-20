@@ -121,6 +121,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\archiveController.cs" />
     <Compile Include="Controllers\buildingsController.cs" />
+    <Compile Include="Controllers\createController.cs" />
     <Compile Include="Controllers\departmentsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\modulesController.cs" />
@@ -277,6 +278,11 @@
     <Content Include="Views\pending\Details.cshtml" />
     <Content Include="Views\pending\Edit.cshtml" />
     <Content Include="Views\pending\Index.cshtml" />
+    <Content Include="Views\create\Create.cshtml" />
+    <Content Include="Views\create\Delete.cshtml" />
+    <Content Include="Views\create\Details.cshtml" />
+    <Content Include="Views\create\Edit.cshtml" />
+    <Content Include="Views\create\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
