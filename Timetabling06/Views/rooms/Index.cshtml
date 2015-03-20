@@ -1,0 +1,57 @@
+@model IEnumerable<Timetabling06.Models.room>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", new {user = ViewBag.user })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.roomType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.roomStructure)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.capacity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.building.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.department.name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.roomType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.roomStructure)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.capacity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.building.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.department.name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { item.roomNumber,item.building.code,ViewBag.user }) |
+            @Html.ActionLink("Details", "Details", new { item.roomNumber,item.building.code, ViewBag.user}) |
+            @Html.ActionLink("Delete", "Delete", new { item.roomNumber,item.building.code, ViewBag.user })
+        </td>
+    </tr>
+}
+
+</table>

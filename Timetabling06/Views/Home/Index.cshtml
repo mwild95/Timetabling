@@ -1,0 +1,35 @@
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    
+    <div id="login-container">
+       
+        <h3 style="padding-left:0px;">Log In</h3>
+        <h2 style="color:red; font-size:140%;">@ViewBag.error</h2>
+        <br>
+
+        <p>
+            <h5 style="display:inline-block; padding-right:2px;">Username:</h5>
+            <input id="Username" type="text" name="Username" style="display:inline-block; padding-right:2px;">
+        </p>
+        <br>
+        <p>
+            <h5 style="display:inline-block; padding-right:2px;">Password:</h5>
+            <input type="password" name="Password" style="display:inline-block; padding-right:2px;">
+        </p>
+        <br>
+        <input id="loginBtn" type="submit" style="height:20px; width:60px;" value="Log In">
+        
+        <hr style="margin-left:10%; margin-right:10%;">
+        
+    </div>
+}
+@Html.ActionLink("Archive", "Index", "Archive")<br />
+@Html.ActionLink("Buildings", "Index", "Buildings")<br />
+

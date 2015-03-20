@@ -1,0 +1,58 @@
+@model Timetabling06.Models.room
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>room</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.roomType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.roomType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.roomStructure)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.roomStructure)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.capacity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.capacity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.building.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.building.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.department.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.department.name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { Model.roomNumber, Model.building.code, ViewBag.user }) |
+    @Html.ActionLink("Back to List", "Index", new { user = ViewBag.user})
+</p>

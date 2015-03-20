@@ -1,0 +1,40 @@
+@model IEnumerable<Timetabling06.Models.module>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.moduleTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.department.name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.moduleTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.department.name)
+        </td>
+        <td>
+            
+            @Html.ActionLink("Edit", "Edit", new {item.deptCode,item.moduleCode}) |
+            @Html.ActionLink("Details", "Details", new { item.deptCode, item.moduleCode }) |
+            @Html.ActionLink("Delete", "Delete", new { item.deptCode, item.moduleCode })
+        </td>
+    </tr>
+}
+
+</table>

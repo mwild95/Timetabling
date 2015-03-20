@@ -1,0 +1,117 @@
+@model Timetabling06.ModelViews.RequestDepartment
+
+@{
+    ViewBag.Title = "Index";
+}
+<div id="loggedInAs"><table id="topBanner"><tr><td><h4>Logged In As: @Model.user.code</h4></td><td><h4>New Responses (1)</h4></td><td><h4>@Html.ActionLink("Log Out", "Index", "Home")</h4></td></tr></table></div>
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", new {user=Model.user.code })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().priority)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().day)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().start)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().length)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().weeks)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().otherReqs)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().requestLink)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().sent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().viewed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().booked)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().module.moduleTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requests.First().round.roundID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.requests) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.priority)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.day)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.start)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.length)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.weeks)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.otherReqs)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.requestLink)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.viewed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.booked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.module.moduleTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.round.roundID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.requestID, user=Model.user.code }) |
+            @Html.ActionLink("Details", "Details", new { id = item.requestID, user = Model.user.code }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.requestID, user = Model.user.code })
+        </td>
+    </tr>
+}
+
+</table>

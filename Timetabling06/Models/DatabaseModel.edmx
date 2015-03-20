@@ -1,0 +1,1099 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="team06Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="announcements">
+          <Key>
+            <PropertyRef Name="annID" />
+          </Key>
+          <Property Name="annID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="postDate" Type="datetime" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="content" Type="varchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'team06.team06.booking' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="booking">
+          <Key>
+            <PropertyRef Name="requestID" />
+            <PropertyRef Name="buildingCode" />
+            <PropertyRef Name="roomNumber" />
+          </Key>
+          <Property Name="requestID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="buildingCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="roomNumber" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="building">
+          <Key>
+            <PropertyRef Name="code" />
+          </Key>
+          <Property Name="code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="park" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="department">
+          <Key>
+            <PropertyRef Name="code" />
+          </Key>
+          <Property Name="code" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="facility">
+          <Key>
+            <PropertyRef Name="facilityID" />
+          </Key>
+          <Property Name="facilityID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="facilityName" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="module">
+          <Key>
+            <PropertyRef Name="moduleCode" />
+            <PropertyRef Name="deptCode" />
+          </Key>
+          <Property Name="moduleCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="deptCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="moduleTitle" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="request">
+          <Key>
+            <PropertyRef Name="requestID" />
+          </Key>
+          <Property Name="requestID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="moduleCode" Type="varchar" MaxLength="10" />
+          <Property Name="deptCode" Type="varchar" MaxLength="5" />
+          <Property Name="priority" Type="tinyint" Nullable="false" />
+          <Property Name="day" Type="tinyint" Nullable="false" />
+          <Property Name="start" Type="int" Nullable="false" />
+          <Property Name="length" Type="tinyint" Nullable="false" />
+          <Property Name="weeks" Type="varchar" MaxLength="35" Nullable="false" />
+          <Property Name="type" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="otherReqs" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="date" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
+          <Property Name="roundID" Type="int" Nullable="false" />
+          <Property Name="requestLink" Type="int" />
+          <Property Name="sent" Type="tinyint" Nullable="false" />
+          <Property Name="status" Type="tinyint" Nullable="false" />
+          <Property Name="viewed" Type="tinyint" Nullable="false" />
+          <Property Name="booked" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="request_facility">
+          <Key>
+            <PropertyRef Name="requestID" />
+            <PropertyRef Name="facilityID" />
+          </Key>
+          <Property Name="requestID" Type="int" Nullable="false" />
+          <Property Name="facilityID" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="room">
+          <Key>
+            <PropertyRef Name="roomNumber" />
+            <PropertyRef Name="buildingCode" />
+          </Key>
+          <Property Name="roomNumber" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="buildingCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="roomType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="roomStructure" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="capacity" Type="int" Nullable="false" />
+          <Property Name="belongsTo" Type="varchar" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="room_facility">
+          <Key>
+            <PropertyRef Name="buildingCode" />
+            <PropertyRef Name="roomNumber" />
+            <PropertyRef Name="facilityID" />
+          </Key>
+          <Property Name="buildingCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="roomNumber" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="facilityID" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="room_request">
+          <Key>
+            <PropertyRef Name="requestID" />
+            <PropertyRef Name="priority" />
+          </Key>
+          <Property Name="requestID" Type="int" Nullable="false" />
+          <Property Name="buildingCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="roomNumber" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="class_size" Type="int" Nullable="false" />
+          <Property Name="priority" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="round">
+          <Key>
+            <PropertyRef Name="roundID" />
+          </Key>
+          <Property Name="roundID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="roundNo" Type="tinyint" Nullable="false" />
+          <Property Name="semester" Type="int" Nullable="false" />
+          <Property Name="year" Type="int" Nullable="false" />
+          <Property Name="startTime" Type="datetime" Nullable="false" />
+          <Property Name="endTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="semester">
+          <Key>
+            <PropertyRef Name="semester" />
+            <PropertyRef Name="year" />
+          </Key>
+          <Property Name="semester" Type="int" Nullable="false" />
+          <Property Name="year" Type="int" Nullable="false" />
+          <Property Name="startDate" Type="date" Nullable="false" />
+          <Property Name="endDate" Type="date" Nullable="false" />
+          <Property Name="weeks" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="staff">
+          <Key>
+            <PropertyRef Name="staffID" />
+          </Key>
+          <Property Name="staffID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="firstName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="lastName" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="deptCode" Type="varchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="staff_module">
+          <Key>
+            <PropertyRef Name="staffID" />
+            <PropertyRef Name="moduleCode" />
+            <PropertyRef Name="deptCode" />
+          </Key>
+          <Property Name="staffID" Type="int" Nullable="false" />
+          <Property Name="moduleCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="deptCode" Type="varchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="weeks_request">
+          <Key>
+            <PropertyRef Name="requestID" />
+            <PropertyRef Name="week" />
+          </Key>
+          <Property Name="requestID" Type="int" Nullable="false" />
+          <Property Name="week" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_booking_request">
+          <End Role="request" Type="Self.request" Multiplicity="1" />
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_booking_room">
+          <End Role="room" Type="Self.room" Multiplicity="1" />
+          <End Role="booking" Type="Self.booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="room">
+              <PropertyRef Name="roomNumber" />
+              <PropertyRef Name="buildingCode" />
+            </Principal>
+            <Dependent Role="booking">
+              <PropertyRef Name="roomNumber" />
+              <PropertyRef Name="buildingCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_module_department">
+          <End Role="department" Type="Self.department" Multiplicity="1" />
+          <End Role="module" Type="Self.module" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="module">
+              <PropertyRef Name="deptCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_request_department">
+          <End Role="department" Type="Self.department" Multiplicity="0..1" />
+          <End Role="request" Type="Self.request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="request">
+              <PropertyRef Name="deptCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_request_facility_facility">
+          <End Role="facility" Type="Self.facility" Multiplicity="1" />
+          <End Role="request_facility" Type="Self.request_facility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="facility">
+              <PropertyRef Name="facilityID" />
+            </Principal>
+            <Dependent Role="request_facility">
+              <PropertyRef Name="facilityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_request_facility_request">
+          <End Role="request" Type="Self.request" Multiplicity="1" />
+          <End Role="request_facility" Type="Self.request_facility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="request_facility">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_request_module">
+          <End Role="module" Type="Self.module" Multiplicity="0..1" />
+          <End Role="request" Type="Self.request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="module">
+              <PropertyRef Name="moduleCode" />
+              <PropertyRef Name="deptCode" />
+            </Principal>
+            <Dependent Role="request">
+              <PropertyRef Name="moduleCode" />
+              <PropertyRef Name="deptCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_request_round">
+          <End Role="round" Type="Self.round" Multiplicity="1" />
+          <End Role="request" Type="Self.request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="round">
+              <PropertyRef Name="roundID" />
+            </Principal>
+            <Dependent Role="request">
+              <PropertyRef Name="roundID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_room_building">
+          <End Role="building" Type="Self.building" Multiplicity="1" />
+          <End Role="room" Type="Self.room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="building">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="room">
+              <PropertyRef Name="buildingCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_room_department">
+          <End Role="department" Type="Self.department" Multiplicity="0..1" />
+          <End Role="room" Type="Self.room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="room">
+              <PropertyRef Name="belongsTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_room_facility_facility">
+          <End Role="facility" Type="Self.facility" Multiplicity="1" />
+          <End Role="room_facility" Type="Self.room_facility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="facility">
+              <PropertyRef Name="facilityID" />
+            </Principal>
+            <Dependent Role="room_facility">
+              <PropertyRef Name="facilityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_room_facility_room1">
+          <End Role="room" Type="Self.room" Multiplicity="1" />
+          <End Role="room_facility" Type="Self.room_facility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="room">
+              <PropertyRef Name="roomNumber" />
+              <PropertyRef Name="buildingCode" />
+            </Principal>
+            <Dependent Role="room_facility">
+              <PropertyRef Name="roomNumber" />
+              <PropertyRef Name="buildingCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_room_request_request">
+          <End Role="request" Type="Self.request" Multiplicity="1" />
+          <End Role="room_request" Type="Self.room_request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="room_request">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_room_request_room">
+          <End Role="room" Type="Self.room" Multiplicity="1" />
+          <End Role="room_request" Type="Self.room_request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="room">
+              <PropertyRef Name="roomNumber" />
+              <PropertyRef Name="buildingCode" />
+            </Principal>
+            <Dependent Role="room_request">
+              <PropertyRef Name="roomNumber" />
+              <PropertyRef Name="buildingCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_round_semester">
+          <End Role="semester" Type="Self.semester" Multiplicity="1" />
+          <End Role="round" Type="Self.round" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="semester">
+              <PropertyRef Name="semester" />
+              <PropertyRef Name="year" />
+            </Principal>
+            <Dependent Role="round">
+              <PropertyRef Name="semester" />
+              <PropertyRef Name="year" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_staff_department">
+          <End Role="department" Type="Self.department" Multiplicity="1" />
+          <End Role="staff" Type="Self.staff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="staff">
+              <PropertyRef Name="deptCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_staff_module_module">
+          <End Role="module" Type="Self.module" Multiplicity="1" />
+          <End Role="staff_module" Type="Self.staff_module" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="module">
+              <PropertyRef Name="moduleCode" />
+              <PropertyRef Name="deptCode" />
+            </Principal>
+            <Dependent Role="staff_module">
+              <PropertyRef Name="moduleCode" />
+              <PropertyRef Name="deptCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_staff_module_staff_module">
+          <End Role="staff" Type="Self.staff" Multiplicity="1" />
+          <End Role="staff_module" Type="Self.staff_module" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="staff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="staff_module">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_weeks_request_request">
+          <End Role="request" Type="Self.request" Multiplicity="1" />
+          <End Role="weeks_request" Type="Self.weeks_request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="weeks_request">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="team06ModelStoreContainer">
+          <EntitySet Name="announcements" EntityType="Self.announcements" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="building" EntityType="Self.building" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="department" EntityType="Self.department" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="facility" EntityType="Self.facility" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="module" EntityType="Self.module" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="request" EntityType="Self.request" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="request_facility" EntityType="Self.request_facility" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="room" EntityType="Self.room" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="room_facility" EntityType="Self.room_facility" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="room_request" EntityType="Self.room_request" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="round" EntityType="Self.round" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="semester" EntityType="Self.semester" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="staff" EntityType="Self.staff" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="staff_module" EntityType="Self.staff_module" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="weeks_request" EntityType="Self.weeks_request" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="booking" EntityType="Self.booking" store:Type="Tables" store:Schema="team06">
+            <DefiningQuery>SELECT 
+    [booking].[requestID] AS [requestID], 
+    [booking].[buildingCode] AS [buildingCode], 
+    [booking].[roomNumber] AS [roomNumber]
+    FROM [team06].[booking] AS [booking]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_booking_request" Association="Self.FK_booking_request">
+            <End Role="request" EntitySet="request" />
+            <End Role="booking" EntitySet="booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_booking_room" Association="Self.FK_booking_room">
+            <End Role="room" EntitySet="room" />
+            <End Role="booking" EntitySet="booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_module_department" Association="Self.FK_module_department">
+            <End Role="department" EntitySet="department" />
+            <End Role="module" EntitySet="module" />
+          </AssociationSet>
+          <AssociationSet Name="FK_request_department" Association="Self.FK_request_department">
+            <End Role="department" EntitySet="department" />
+            <End Role="request" EntitySet="request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_request_facility_facility" Association="Self.FK_request_facility_facility">
+            <End Role="facility" EntitySet="facility" />
+            <End Role="request_facility" EntitySet="request_facility" />
+          </AssociationSet>
+          <AssociationSet Name="FK_request_facility_request" Association="Self.FK_request_facility_request">
+            <End Role="request" EntitySet="request" />
+            <End Role="request_facility" EntitySet="request_facility" />
+          </AssociationSet>
+          <AssociationSet Name="FK_request_module" Association="Self.FK_request_module">
+            <End Role="module" EntitySet="module" />
+            <End Role="request" EntitySet="request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_request_round" Association="Self.FK_request_round">
+            <End Role="round" EntitySet="round" />
+            <End Role="request" EntitySet="request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_room_building" Association="Self.FK_room_building">
+            <End Role="building" EntitySet="building" />
+            <End Role="room" EntitySet="room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_room_department" Association="Self.FK_room_department">
+            <End Role="department" EntitySet="department" />
+            <End Role="room" EntitySet="room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_room_facility_facility" Association="Self.FK_room_facility_facility">
+            <End Role="facility" EntitySet="facility" />
+            <End Role="room_facility" EntitySet="room_facility" />
+          </AssociationSet>
+          <AssociationSet Name="FK_room_facility_room1" Association="Self.FK_room_facility_room1">
+            <End Role="room" EntitySet="room" />
+            <End Role="room_facility" EntitySet="room_facility" />
+          </AssociationSet>
+          <AssociationSet Name="FK_room_request_request" Association="Self.FK_room_request_request">
+            <End Role="request" EntitySet="request" />
+            <End Role="room_request" EntitySet="room_request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_room_request_room" Association="Self.FK_room_request_room">
+            <End Role="room" EntitySet="room" />
+            <End Role="room_request" EntitySet="room_request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_round_semester" Association="Self.FK_round_semester">
+            <End Role="semester" EntitySet="semester" />
+            <End Role="round" EntitySet="round" />
+          </AssociationSet>
+          <AssociationSet Name="FK_staff_department" Association="Self.FK_staff_department">
+            <End Role="department" EntitySet="department" />
+            <End Role="staff" EntitySet="staff" />
+          </AssociationSet>
+          <AssociationSet Name="FK_staff_module_module" Association="Self.FK_staff_module_module">
+            <End Role="module" EntitySet="module" />
+            <End Role="staff_module" EntitySet="staff_module" />
+          </AssociationSet>
+          <AssociationSet Name="FK_staff_module_staff_module" Association="Self.FK_staff_module_staff_module">
+            <End Role="staff" EntitySet="staff" />
+            <End Role="staff_module" EntitySet="staff_module" />
+          </AssociationSet>
+          <AssociationSet Name="FK_weeks_request_request" Association="Self.FK_weeks_request_request">
+            <End Role="request" EntitySet="request" />
+            <End Role="weeks_request" EntitySet="weeks_request" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="team06Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="announcement">
+          <Key>
+            <PropertyRef Name="annID" />
+          </Key>
+          <Property Name="annID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="postDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="content" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="building">
+          <Key>
+            <PropertyRef Name="code" />
+          </Key>
+          <Property Name="code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="park" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="rooms" Relationship="Self.FK_room_building" FromRole="building" ToRole="room" />
+        </EntityType>
+        <EntityType Name="department">
+          <Key>
+            <PropertyRef Name="code" />
+          </Key>
+          <Property Name="code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="username" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="modules" Relationship="Self.FK_module_department" FromRole="department" ToRole="module" />
+          <NavigationProperty Name="requests" Relationship="Self.FK_request_department" FromRole="department" ToRole="request" />
+          <NavigationProperty Name="rooms" Relationship="Self.FK_room_department" FromRole="department" ToRole="room" />
+          <NavigationProperty Name="staffs" Relationship="Self.FK_staff_department" FromRole="department" ToRole="staff" />
+        </EntityType>
+        <EntityType Name="facility">
+          <Key>
+            <PropertyRef Name="facilityID" />
+          </Key>
+          <Property Name="facilityID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="facilityName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="requests" Relationship="Self.request_facility" FromRole="facility" ToRole="request" />
+          <NavigationProperty Name="rooms" Relationship="Self.room_facility" FromRole="facility" ToRole="room" />
+        </EntityType>
+        <EntityType Name="module">
+          <Key>
+            <PropertyRef Name="moduleCode" />
+            <PropertyRef Name="deptCode" />
+          </Key>
+          <Property Name="moduleCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="deptCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="moduleTitle" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="department" Relationship="Self.FK_module_department" FromRole="module" ToRole="department" />
+          <NavigationProperty Name="requests" Relationship="Self.FK_request_module" FromRole="module" ToRole="request" />
+          <NavigationProperty Name="staffs" Relationship="Self.staff_module" FromRole="module" ToRole="staff" />
+        </EntityType>
+        <EntityType Name="request">
+          <Key>
+            <PropertyRef Name="requestID" />
+          </Key>
+          <Property Name="requestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="moduleCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="deptCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="priority" Type="Byte" Nullable="false" />
+          <Property Name="day" Type="Byte" Nullable="false" />
+          <Property Name="start" Type="Int32" Nullable="false" />
+          <Property Name="length" Type="Byte" Nullable="false" />
+          <Property Name="weeks" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="type" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="otherReqs" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="date" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="roundID" Type="Int32" Nullable="false" />
+          <Property Name="requestLink" Type="Int32" />
+          <Property Name="sent" Type="Byte" Nullable="false" />
+          <Property Name="status" Type="Byte" Nullable="false" />
+          <Property Name="viewed" Type="Byte" Nullable="false" />
+          <Property Name="booked" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="department" Relationship="Self.FK_request_department" FromRole="request" ToRole="department" />
+          <NavigationProperty Name="module" Relationship="Self.FK_request_module" FromRole="request" ToRole="module" />
+          <NavigationProperty Name="round" Relationship="Self.FK_request_round" FromRole="request" ToRole="round" />
+          <NavigationProperty Name="room_request" Relationship="Self.FK_room_request_request" FromRole="request" ToRole="room_request" />
+          <NavigationProperty Name="weeks_request" Relationship="Self.FK_weeks_request_request" FromRole="request" ToRole="weeks_request" />
+          <NavigationProperty Name="facilities" Relationship="Self.request_facility" FromRole="request" ToRole="facility" />
+          <NavigationProperty Name="rooms" Relationship="Self.booking" FromRole="request" ToRole="room" />
+        </EntityType>
+        <EntityType Name="room">
+          <Key>
+            <PropertyRef Name="roomNumber" />
+            <PropertyRef Name="buildingCode" />
+          </Key>
+          <Property Name="roomNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="buildingCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="roomType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="roomStructure" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="capacity" Type="Int32" Nullable="false" />
+          <Property Name="belongsTo" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="building" Relationship="Self.FK_room_building" FromRole="room" ToRole="building" />
+          <NavigationProperty Name="department" Relationship="Self.FK_room_department" FromRole="room" ToRole="department" />
+          <NavigationProperty Name="room_request" Relationship="Self.FK_room_request_room" FromRole="room" ToRole="room_request" />
+          <NavigationProperty Name="facilities" Relationship="Self.room_facility" FromRole="room" ToRole="facility" />
+          <NavigationProperty Name="requests" Relationship="Self.booking" FromRole="room" ToRole="request" />
+        </EntityType>
+        <EntityType Name="room_request">
+          <Key>
+            <PropertyRef Name="requestID" />
+            <PropertyRef Name="priority" />
+          </Key>
+          <Property Name="requestID" Type="Int32" Nullable="false" />
+          <Property Name="buildingCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="roomNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="class_size" Type="Int32" Nullable="false" />
+          <Property Name="priority" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="request" Relationship="Self.FK_room_request_request" FromRole="room_request" ToRole="request" />
+          <NavigationProperty Name="room" Relationship="Self.FK_room_request_room" FromRole="room_request" ToRole="room" />
+        </EntityType>
+        <EntityType Name="round">
+          <Key>
+            <PropertyRef Name="roundID" />
+          </Key>
+          <Property Name="roundID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="roundNo" Type="Byte" Nullable="false" />
+          <Property Name="semester" Type="Int32" Nullable="false" />
+          <Property Name="year" Type="Int32" Nullable="false" />
+          <Property Name="startTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="endTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="requests" Relationship="Self.FK_request_round" FromRole="round" ToRole="request" />
+          <NavigationProperty Name="semester1" Relationship="Self.FK_round_semester" FromRole="round" ToRole="semester" />
+        </EntityType>
+        <EntityType Name="semester">
+          <Key>
+            <PropertyRef Name="semester1" />
+            <PropertyRef Name="year" />
+          </Key>
+          <Property Name="semester1" Type="Int32" Nullable="false" />
+          <Property Name="year" Type="Int32" Nullable="false" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="endDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="weeks" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="rounds" Relationship="Self.FK_round_semester" FromRole="semester" ToRole="round" />
+        </EntityType>
+        <EntityType Name="staff">
+          <Key>
+            <PropertyRef Name="staffID" />
+          </Key>
+          <Property Name="staffID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="firstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="deptCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="department" Relationship="Self.FK_staff_department" FromRole="staff" ToRole="department" />
+          <NavigationProperty Name="modules" Relationship="Self.staff_module" FromRole="staff" ToRole="module" />
+        </EntityType>
+        <EntityType Name="weeks_request">
+          <Key>
+            <PropertyRef Name="requestID" />
+            <PropertyRef Name="week" />
+          </Key>
+          <Property Name="requestID" Type="Int32" Nullable="false" />
+          <Property Name="week" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="request" Relationship="Self.FK_weeks_request_request" FromRole="weeks_request" ToRole="request" />
+        </EntityType>
+        <Association Name="FK_room_building">
+          <End Role="building" Type="Self.building" Multiplicity="1" />
+          <End Role="room" Type="Self.room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="building">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="room">
+              <PropertyRef Name="buildingCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_module_department">
+          <End Role="department" Type="Self.department" Multiplicity="1" />
+          <End Role="module" Type="Self.module" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="module">
+              <PropertyRef Name="deptCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_request_department">
+          <End Role="department" Type="Self.department" Multiplicity="0..1" />
+          <End Role="request" Type="Self.request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="request">
+              <PropertyRef Name="deptCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_room_department">
+          <End Role="department" Type="Self.department" Multiplicity="0..1" />
+          <End Role="room" Type="Self.room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="room">
+              <PropertyRef Name="belongsTo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_staff_department">
+          <End Role="department" Type="Self.department" Multiplicity="1" />
+          <End Role="staff" Type="Self.staff" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="department">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="staff">
+              <PropertyRef Name="deptCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_request_module">
+          <End Role="module" Type="Self.module" Multiplicity="0..1" />
+          <End Role="request" Type="Self.request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="module">
+              <PropertyRef Name="moduleCode" />
+              <PropertyRef Name="deptCode" />
+            </Principal>
+            <Dependent Role="request">
+              <PropertyRef Name="moduleCode" />
+              <PropertyRef Name="deptCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_request_round">
+          <End Role="round" Type="Self.round" Multiplicity="1" />
+          <End Role="request" Type="Self.request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="round">
+              <PropertyRef Name="roundID" />
+            </Principal>
+            <Dependent Role="request">
+              <PropertyRef Name="roundID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_room_request_request">
+          <End Role="request" Type="Self.request" Multiplicity="1" />
+          <End Role="room_request" Type="Self.room_request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="room_request">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_weeks_request_request">
+          <End Role="request" Type="Self.request" Multiplicity="1" />
+          <End Role="weeks_request" Type="Self.weeks_request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="weeks_request">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_room_request_room">
+          <End Role="room" Type="Self.room" Multiplicity="1" />
+          <End Role="room_request" Type="Self.room_request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="room">
+              <PropertyRef Name="roomNumber" />
+              <PropertyRef Name="buildingCode" />
+            </Principal>
+            <Dependent Role="room_request">
+              <PropertyRef Name="roomNumber" />
+              <PropertyRef Name="buildingCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_round_semester">
+          <End Role="semester" Type="Self.semester" Multiplicity="1" />
+          <End Role="round" Type="Self.round" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="semester">
+              <PropertyRef Name="semester1" />
+              <PropertyRef Name="year" />
+            </Principal>
+            <Dependent Role="round">
+              <PropertyRef Name="semester" />
+              <PropertyRef Name="year" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="request_facility">
+          <End Role="facility" Type="Self.facility" Multiplicity="*" />
+          <End Role="request" Type="Self.request" Multiplicity="*" />
+        </Association>
+        <Association Name="room_facility">
+          <End Role="facility" Type="Self.facility" Multiplicity="*" />
+          <End Role="room" Type="Self.room" Multiplicity="*" />
+        </Association>
+        <Association Name="staff_module">
+          <End Role="module" Type="Self.module" Multiplicity="*" />
+          <End Role="staff" Type="Self.staff" Multiplicity="*" />
+        </Association>
+        <Association Name="booking">
+          <End Role="request" Type="Self.request" Multiplicity="*" />
+          <End Role="room" Type="Self.room" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="team06Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="announcements" EntityType="Self.announcement" />
+          <EntitySet Name="buildings" EntityType="Self.building" />
+          <EntitySet Name="departments" EntityType="Self.department" />
+          <EntitySet Name="facilities" EntityType="Self.facility" />
+          <EntitySet Name="modules" EntityType="Self.module" />
+          <EntitySet Name="requests" EntityType="Self.request" />
+          <EntitySet Name="rooms" EntityType="Self.room" />
+          <EntitySet Name="room_request" EntityType="Self.room_request" />
+          <EntitySet Name="rounds" EntityType="Self.round" />
+          <EntitySet Name="semesters" EntityType="Self.semester" />
+          <EntitySet Name="staffs" EntityType="Self.staff" />
+          <EntitySet Name="weeks_request" EntityType="Self.weeks_request" />
+          <AssociationSet Name="FK_room_building" Association="Self.FK_room_building">
+            <End Role="building" EntitySet="buildings" />
+            <End Role="room" EntitySet="rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_module_department" Association="Self.FK_module_department">
+            <End Role="department" EntitySet="departments" />
+            <End Role="module" EntitySet="modules" />
+          </AssociationSet>
+          <AssociationSet Name="FK_request_department" Association="Self.FK_request_department">
+            <End Role="department" EntitySet="departments" />
+            <End Role="request" EntitySet="requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_room_department" Association="Self.FK_room_department">
+            <End Role="department" EntitySet="departments" />
+            <End Role="room" EntitySet="rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_staff_department" Association="Self.FK_staff_department">
+            <End Role="department" EntitySet="departments" />
+            <End Role="staff" EntitySet="staffs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_request_module" Association="Self.FK_request_module">
+            <End Role="module" EntitySet="modules" />
+            <End Role="request" EntitySet="requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_request_round" Association="Self.FK_request_round">
+            <End Role="round" EntitySet="rounds" />
+            <End Role="request" EntitySet="requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_room_request_request" Association="Self.FK_room_request_request">
+            <End Role="request" EntitySet="requests" />
+            <End Role="room_request" EntitySet="room_request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_weeks_request_request" Association="Self.FK_weeks_request_request">
+            <End Role="request" EntitySet="requests" />
+            <End Role="weeks_request" EntitySet="weeks_request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_room_request_room" Association="Self.FK_room_request_room">
+            <End Role="room" EntitySet="rooms" />
+            <End Role="room_request" EntitySet="room_request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_round_semester" Association="Self.FK_round_semester">
+            <End Role="semester" EntitySet="semesters" />
+            <End Role="round" EntitySet="rounds" />
+          </AssociationSet>
+          <AssociationSet Name="request_facility" Association="Self.request_facility">
+            <End Role="facility" EntitySet="facilities" />
+            <End Role="request" EntitySet="requests" />
+          </AssociationSet>
+          <AssociationSet Name="room_facility" Association="Self.room_facility">
+            <End Role="facility" EntitySet="facilities" />
+            <End Role="room" EntitySet="rooms" />
+          </AssociationSet>
+          <AssociationSet Name="staff_module" Association="Self.staff_module">
+            <End Role="module" EntitySet="modules" />
+            <End Role="staff" EntitySet="staffs" />
+          </AssociationSet>
+          <AssociationSet Name="booking" Association="Self.booking">
+            <End Role="request" EntitySet="requests" />
+            <End Role="room" EntitySet="rooms" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="team06ModelStoreContainer" CdmEntityContainer="team06Entities">
+          <EntitySetMapping Name="announcements">
+            <EntityTypeMapping TypeName="team06Model.announcement">
+              <MappingFragment StoreEntitySet="announcements">
+                <ScalarProperty Name="annID" ColumnName="annID" />
+                <ScalarProperty Name="postDate" ColumnName="postDate" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="content" ColumnName="content" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="buildings">
+            <EntityTypeMapping TypeName="team06Model.building">
+              <MappingFragment StoreEntitySet="building">
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="park" ColumnName="park" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="departments">
+            <EntityTypeMapping TypeName="team06Model.department">
+              <MappingFragment StoreEntitySet="department">
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="facilities">
+            <EntityTypeMapping TypeName="team06Model.facility">
+              <MappingFragment StoreEntitySet="facility">
+                <ScalarProperty Name="facilityID" ColumnName="facilityID" />
+                <ScalarProperty Name="facilityName" ColumnName="facilityName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="modules">
+            <EntityTypeMapping TypeName="team06Model.module">
+              <MappingFragment StoreEntitySet="module">
+                <ScalarProperty Name="moduleCode" ColumnName="moduleCode" />
+                <ScalarProperty Name="deptCode" ColumnName="deptCode" />
+                <ScalarProperty Name="moduleTitle" ColumnName="moduleTitle" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="requests">
+            <EntityTypeMapping TypeName="team06Model.request">
+              <MappingFragment StoreEntitySet="request">
+                <ScalarProperty Name="start" ColumnName="start" />
+                <ScalarProperty Name="requestID" ColumnName="requestID" />
+                <ScalarProperty Name="moduleCode" ColumnName="moduleCode" />
+                <ScalarProperty Name="deptCode" ColumnName="deptCode" />
+                <ScalarProperty Name="priority" ColumnName="priority" />
+                <ScalarProperty Name="day" ColumnName="day" />
+                <ScalarProperty Name="length" ColumnName="length" />
+                <ScalarProperty Name="weeks" ColumnName="weeks" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="otherReqs" ColumnName="otherReqs" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="roundID" ColumnName="roundID" />
+                <ScalarProperty Name="requestLink" ColumnName="requestLink" />
+                <ScalarProperty Name="sent" ColumnName="sent" />
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="viewed" ColumnName="viewed" />
+                <ScalarProperty Name="booked" ColumnName="booked" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rooms">
+            <EntityTypeMapping TypeName="team06Model.room">
+              <MappingFragment StoreEntitySet="room">
+                <ScalarProperty Name="roomNumber" ColumnName="roomNumber" />
+                <ScalarProperty Name="buildingCode" ColumnName="buildingCode" />
+                <ScalarProperty Name="roomType" ColumnName="roomType" />
+                <ScalarProperty Name="roomStructure" ColumnName="roomStructure" />
+                <ScalarProperty Name="capacity" ColumnName="capacity" />
+                <ScalarProperty Name="belongsTo" ColumnName="belongsTo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="room_request">
+            <EntityTypeMapping TypeName="team06Model.room_request">
+              <MappingFragment StoreEntitySet="room_request">
+                <ScalarProperty Name="requestID" ColumnName="requestID" />
+                <ScalarProperty Name="buildingCode" ColumnName="buildingCode" />
+                <ScalarProperty Name="roomNumber" ColumnName="roomNumber" />
+                <ScalarProperty Name="class_size" ColumnName="class_size" />
+                <ScalarProperty Name="priority" ColumnName="priority" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="rounds">
+            <EntityTypeMapping TypeName="team06Model.round">
+              <MappingFragment StoreEntitySet="round">
+                <ScalarProperty Name="roundID" ColumnName="roundID" />
+                <ScalarProperty Name="roundNo" ColumnName="roundNo" />
+                <ScalarProperty Name="semester" ColumnName="semester" />
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="startTime" ColumnName="startTime" />
+                <ScalarProperty Name="endTime" ColumnName="endTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="semesters">
+            <EntityTypeMapping TypeName="team06Model.semester">
+              <MappingFragment StoreEntitySet="semester">
+                <ScalarProperty Name="semester1" ColumnName="semester" />
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+                <ScalarProperty Name="weeks" ColumnName="weeks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="staffs">
+            <EntityTypeMapping TypeName="team06Model.staff">
+              <MappingFragment StoreEntitySet="staff">
+                <ScalarProperty Name="staffID" ColumnName="staffID" />
+                <ScalarProperty Name="firstName" ColumnName="firstName" />
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
+                <ScalarProperty Name="deptCode" ColumnName="deptCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="weeks_request">
+            <EntityTypeMapping TypeName="team06Model.weeks_request">
+              <MappingFragment StoreEntitySet="weeks_request">
+                <ScalarProperty Name="requestID" ColumnName="requestID" />
+                <ScalarProperty Name="week" ColumnName="week" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="request_facility" TypeName="team06Model.request_facility" StoreEntitySet="request_facility">
+            <EndProperty Name="facility">
+              <ScalarProperty Name="facilityID" ColumnName="facilityID" />
+            </EndProperty>
+            <EndProperty Name="request">
+              <ScalarProperty Name="requestID" ColumnName="requestID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="room_facility" TypeName="team06Model.room_facility" StoreEntitySet="room_facility">
+            <EndProperty Name="facility">
+              <ScalarProperty Name="facilityID" ColumnName="facilityID" />
+            </EndProperty>
+            <EndProperty Name="room">
+              <ScalarProperty Name="roomNumber" ColumnName="roomNumber" />
+              <ScalarProperty Name="buildingCode" ColumnName="buildingCode" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="staff_module" TypeName="team06Model.staff_module" StoreEntitySet="staff_module">
+            <EndProperty Name="module">
+              <ScalarProperty Name="moduleCode" ColumnName="moduleCode" />
+              <ScalarProperty Name="deptCode" ColumnName="deptCode" />
+            </EndProperty>
+            <EndProperty Name="staff">
+              <ScalarProperty Name="staffID" ColumnName="staffID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="booking" TypeName="team06Model.booking" StoreEntitySet="booking">
+            <EndProperty Name="request">
+              <ScalarProperty Name="requestID" ColumnName="requestID" />
+            </EndProperty>
+            <EndProperty Name="room">
+              <ScalarProperty Name="roomNumber" ColumnName="roomNumber" />
+              <ScalarProperty Name="buildingCode" ColumnName="buildingCode" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

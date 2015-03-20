@@ -1,0 +1,11 @@
+@model Timetabling06.ModelViews.HomeModel
+
+@{
+    ViewBag.Title = "Home";
+}
+<div id="pageContent">
+    <div id="loggedInAs"><table id="topBanner" style="width:100%;"><tr><td style="width:33%; text-align:left;"><h4>Logged In As: @Model.user.name</h4></td><td style="width:33%; text-align:center;"><h4>New Responses (@Model.unseenRequests)</h4></td><td style="width:33%; text-align:right;"><h4>@Html.ActionLink("Log Out", "Index", "Home")</h4></td></tr></table></div>
+
+    @Html.ActionLink("Archive", "Index", "Archive", new { user = Model.user.ToString() }, null)
+    @Html.ActionLink("Rooms", "Index", "Rooms", new { user = Model.user.ToString() }, null)<br />
+</div>
