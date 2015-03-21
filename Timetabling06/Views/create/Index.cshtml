@@ -1,123 +1,41 @@
-﻿@model IEnumerable<Timetabling06.Models.request>
+﻿@model Timetabling06.ModelViews.ModuleDepartment
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Create New Request";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.priority)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.day)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.start)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.length)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.weeks)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.otherReqs)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.date)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.requestLink)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.sent)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.viewed)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.booked)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.department.name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.module.moduleTitle)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.round.roundID)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.priority)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.day)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.start)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.length)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.weeks)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.otherReqs)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.date)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.requestLink)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.sent)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.viewed)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.booked)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.department.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.module.moduleTitle)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.round.roundID)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.requestID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.requestID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.requestID })
-        </td>
-    </tr>
-}
-
-</table>
+<div class="container">
+    <div class="row">
+        <div class="col-*-*"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 grid-view">
+            <select id="roundsChoice">
+                @foreach(var item in Model.rounds){
+                    <option id="@item.roundID">
+                        @if (item.roundNo == 0)
+                        {
+                           @: AdHoc Round - Semester @item.semester - 
+                           if(item.semester==1){
+                                @item.year@:/@item.year+1
+                           }
+                           else { 
+                               var firstYear = item.year-1;
+                             @firstYear@:/@item.year
+                           }
+                        }
+                        else { 
+                            @item.year @item.semester
+                        }
+                        
+                    </option>
+                 }
+            </select>
+</div>
+        <div class="col-md-5 grid-view">Test</div>
+        <div class="col-md-4 grid-view">Test</div>
+    </div>
+    <div class="row">
+    </div>
+</div>
