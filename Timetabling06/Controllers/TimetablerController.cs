@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,6 +23,23 @@ namespace Timetabling06.Controllers
                 
                 return View(data);
             }
+              public ActionResult Index()
+        {
+            ViewBag.roomNumber = new SelectList(db.rooms, "roomNumber", "buildingCode").Distinct();
+
+            ViewBag.park = new SelectList(db.buildings, "code", "park" ).Distinct();
+
+            ViewBag.building = new SelectList(db.buildings, "code", "name").Distinct();
+
+            return View();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
+    
+        }
             
         }
     }
