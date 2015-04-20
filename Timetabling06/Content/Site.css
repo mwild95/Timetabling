@@ -64,6 +64,29 @@ background: linear-gradient(to bottom, #8463cc 0%, #29096d 58%) repeat scroll 0 
     padding-left:0.5%;
 }
 
+.border {    
+    border:2px solid grey;
+    border-radius:10px;
+}
+
+.fill {
+    height: 85%;
+}
+
+.halfRow {
+    height:50%;
+}
+
+
+.grid-view {
+    border:solid;
+    border-width:1px;
+    border-color:#ddd;
+   
+    margin:2px;
+}
+
+
 
 /* Styles for basic forms
 -----------------------------------------------------------*/
@@ -119,7 +142,7 @@ textarea {
 /*Side Menu CSS*/
 
 @import url(//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css);
-}
+
 @import url(http://fonts.googleapis.com/css?family=Titillium+Web:300);
 .fa-2x {
 font-size: 2em;

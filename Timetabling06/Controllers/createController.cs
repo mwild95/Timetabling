@@ -21,8 +21,14 @@ namespace Timetabling06.Controllers
            
             ModuleDepartment createData = new ModuleDepartment();
             
-            var rounds = db.rounds.Where(r=>r.startTime<=DateTime.Now).Where(r=>r.endTime>=DateTime.Now).Include(r=>r.semester).Include(r=>r.year);
-            createData.rounds = rounds.ToList();
+            var rounds = db.rounds.Where(r=>r.startTime<=DateTime.Now).Where(r=>r.endTime>=DateTime.Now);
+            try
+            {
+                createData.rounds = rounds.ToList();
+            }
+            catch { 
+            }
+            
             return View(createData);
         }
 

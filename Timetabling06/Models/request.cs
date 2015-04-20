@@ -32,7 +32,7 @@ namespace Timetabling06.Models
         public string weeks { get; set; }
         public string type { get; set; }
         public string otherReqs { get; set; }
-        public byte[] date { get; set; }
+        public Nullable<System.DateTime> date { get; set; }
         public int roundID { get; set; }
         public Nullable<int> requestLink { get; set; }
         public byte sent { get; set; }

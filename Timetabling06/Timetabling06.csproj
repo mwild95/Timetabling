@@ -184,6 +184,7 @@
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ModelViews\HomeModel.cs" />
+    <Compile Include="ModelViews\ModuleDepartment.cs" />
     <Compile Include="ModelViews\RequestDepartment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -220,6 +221,7 @@
       <LastGenOutput>DatabaseModel.cs</LastGenOutput>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\create.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -278,10 +280,6 @@
     <Content Include="Views\pending\Details.cshtml" />
     <Content Include="Views\pending\Edit.cshtml" />
     <Content Include="Views\pending\Index.cshtml" />
-    <Content Include="Views\create\Create.cshtml" />
-    <Content Include="Views\create\Delete.cshtml" />
-    <Content Include="Views\create\Details.cshtml" />
-    <Content Include="Views\create\Edit.cshtml" />
     <Content Include="Views\create\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>

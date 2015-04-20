@@ -22,12 +22,14 @@ namespace Timetabling06.Controllers
                 return RedirectToAction("Index", "Home", new { error = "Please Log In." });
             }else{
                 RequestDepartment data = new RequestDepartment();
-                var requests = db.requests.Include(r => r.module).Include(r => r.round).Where(r=>r.deptCode==user);
+                var requests = db.requests.Include(r => r.module).Include(r => r.round).Where(r => r.deptCode == user).ToList(); ;
+                
                 var department = db.departments.Where(r=>r.code==user);
-                data.requests = requests.ToList();
+                data.requests = requests;
                 data.user = department.First() ;
                 
                 return View(data);
+               
             }
             
         }

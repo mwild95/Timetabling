@@ -3,39 +3,79 @@
 @{
     ViewBag.Title = "Create New Request";
 }
+<div style="height:100%; width:100%; position:absolute; margin-top:10px;">
+    <div class="row fill" style="width:95%; height:100%; padding-left:2%;">
+        <div class="col-md-6 fill" >
+            <div class="row halfRow">
+                <div class="col-md-6 fill">
+                    <div class="border fill">
+                        <select>
+                            @foreach (var item in Model.rounds)
+                            {
+                                <option id="@item.roundID">
+                                    @if (item.roundNo == 0)
+                                    {
+                                        @: AdHoc Round - Semester @item.semester -
+                if (item.semester == 1)
+                {
+                    @item.year@:/@item.year+1
+                }
+                else
+                {
+                    var firstYear = item.year - 1;
+                    @firstYear@:/@item.year
+                }
+                                    }
+                                    else
+                                    {
+                                        @: Round @item.roundNo - Semester @item.semester
+                if (item.semester == 1)
+                {
+                    @item.year@:/@item.year+1
+                }
+                else
+                {
+                    var firstYear = item.year - 1;
+                    @firstYear@:/@item.year
+                }
+                                    }
+                                </option>
+                            }
+                        </select>
+                        <div>
 
-
-<div class="container">
-    <div class="row">
-        <div class="col-*-*"></div>
-    </div>
-    <div class="row">
-        <div class="col-md-2 grid-view">
-            <select id="roundsChoice">
-                @foreach(var item in Model.rounds){
-                    <option id="@item.roundID">
-                        @if (item.roundNo == 0)
-                        {
-                           @: AdHoc Round - Semester @item.semester - 
-                           if(item.semester==1){
-                                @item.year@:/@item.year+1
-                           }
-                           else { 
-                               var firstYear = item.year-1;
-                             @firstYear@:/@item.year
-                           }
-                        }
-                        else { 
-                            @item.year @item.semester
-                        }
+                            <h5 style=" margin-top:0; display:inline-block;">Priority Booking: </h5>
+                            <input type="checkbox" name="priority" value="priority" id="priority1" style="display:inline-block;">
+                        </div>
                         
-                    </option>
-                 }
-            </select>
-</div>
-        <div class="col-md-5 grid-view">Test</div>
-        <div class="col-md-4 grid-view">Test</div>
+                    </div>
+                </div>
+                <div class="col-md-6 fill">
+                    <div class="border fill">
+                        3
+                    </div>
+                </div>
+            </div>
+            <div class="row halfRow">
+                <div class="col-md-6 fill">
+                    <div class="border fill">
+                        4
+                    </div>
+                </div>
+                <div class="col-md-6 fill">
+                  <div class="border fill">
+                      5
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 fill">
+            <div class="border fill">
+               1
+            </div>
+        </div>
     </div>
-    <div class="row">
-    </div>
 </div>
+
+    
+@Scripts.Render("/Scripts/create.js")

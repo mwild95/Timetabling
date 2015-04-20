@@ -73,13 +73,13 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
           <Property Name="weeks" Type="varchar" MaxLength="35" Nullable="false" />
           <Property Name="type" Type="varchar" MaxLength="30" Nullable="false" />
           <Property Name="otherReqs" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="date" Type="timestamp" StoreGeneratedPattern="Computed" Nullable="false" />
           <Property Name="roundID" Type="int" Nullable="false" />
           <Property Name="requestLink" Type="int" />
           <Property Name="sent" Type="tinyint" Nullable="false" />
           <Property Name="status" Type="tinyint" Nullable="false" />
           <Property Name="viewed" Type="tinyint" Nullable="false" />
           <Property Name="booked" Type="tinyint" Nullable="false" />
+          <Property Name="date" Type="datetime" StoreGeneratedPattern="Computed" />
         </EntityType>
         <EntityType Name="request_facility">
           <Key>
@@ -581,7 +581,7 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
           <Property Name="weeks" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="type" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="otherReqs" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="date" Type="Binary" MaxLength="8" FixedLength="true" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="date" Type="DateTime" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="roundID" Type="Int32" Nullable="false" />
           <Property Name="requestLink" Type="Int32" />
           <Property Name="sent" Type="Byte" Nullable="false" />
