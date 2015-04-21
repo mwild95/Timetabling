@@ -1,39 +1,58 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    
+  
+    
+    @RenderSection("scripts", required: false)
+
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
+    
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/master.js")
 </head>
 <body>
 
     <div id="outerContainer">
-        <div id="left-box">
-            <p style="font-size: 12px; padding: 10px 10px 10px 20px;">
-                Loughborough University
-                <br>
-                Leicestershire, UK
-                <br>
-                LE11 3TU
-                <br>
-                +44 (0)1509 222222
-            </p>
+        <div class="navbar navbar-default navbar-static-top">
+            <div id="left-box">
+                <p style="font-size: 12px; padding: 10px 10px 10px 20px;">
+                        Loughborough University
+                        <br>
+                        Leicestershire, UK
+                        <br>
+                        LE11 3TU
+                        <br>
+                        +44 (0)1509 222222
+                </p>
+                </div>
+                <div id="right-box">
+                    <img src="../Content/lboro-logo.gif">
+                </div>
+                <div id="locationBar">
+                    <h2 style="padding: 10px 20px 0;">Loughborough Timetabling</h2>
+                </div>
+            
+            
         </div>
-        <div id="right-box">
-            <img src="../Content/lboro-logo.gif">
+        <div id="mainContent">
+            @RenderBody()
         </div>
-        <div id="locationBar">
-            <h2 style="padding: 10px 20px 0;">Loughborough Timetabling</h2>
-        </div>
-        @RenderBody()
+        
     </div>
 
     <nav class="main-menu" id="side-menu">
         <ul>
             <li>
-                <a href="#">
+                <a href="#" id="homeSideMenu">
                     <img src="../Content/home_w.png" style="margin-left:40%;">
                     <i class="fa fa-home fa-2x"></i>
                     <span class="nav-text">
@@ -43,7 +62,7 @@
 
             </li>
             <li class="has-subnav">
-                <a href="#">
+                <a href="#" id="timetableSideMenu">
                     <img src="../Content/time.png" style="margin-left:40%;">
                     <i class="fa fa-laptop fa-2x"></i>
                     <span class="nav-text">
@@ -53,7 +72,7 @@
 
             </li>
             <li class="has-subnav">
-                <a href="#">
+                <a href="#" id="createSideMenu">
                     <img src="../Content/create.png" style="margin-left:40%;">
                     <i class="fa fa-list fa-2x"></i>
                     <span class="nav-text">
@@ -107,8 +126,6 @@
 
 
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/Scripts/master.js");
-    @RenderSection("scripts", required: false)
+    
 </body>
 </html>

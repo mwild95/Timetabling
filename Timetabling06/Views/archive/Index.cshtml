@@ -1,8 +1,11 @@
 @model Timetabling06.ModelViews.RequestDepartment
-
+<head>
+    <script type="text/javascript" src="@Url.Content("/Scripts/create.js")"></script>
+</head>
 @{
     ViewBag.Title = "Index";
 }
+
 <div id="loggedInAs"><table id="topBanner"><tr><td><h4>Logged In As: @Model.user.code</h4></td><td><h4>New Responses (1)</h4></td><td><h4>@Html.ActionLink("Log Out", "Index", "Home")</h4></td></tr></table></div>
 <h2>Index</h2>
 
@@ -60,7 +63,10 @@
     </tr>
 
 @foreach (var item in Model.requests) {
-    <tr>
+    
+        
+            <tr>
+
         <td>
             @Html.DisplayFor(modelItem => item.priority)
         </td>
@@ -115,3 +121,5 @@
 }
 
 </table>
+
+

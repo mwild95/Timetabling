@@ -3,7 +3,35 @@
     if(!LoggedIn()){
         $("#side-menu").hide();
         document.getElementById("outerContainer").style.maxWidth = "100%";
+
     }
+
+    $("#homeSideMenu").click(function () {
+        
+        var myParam = location.search.split('user=')[1];
+        alert(myParam);
+        if (myParam != null) {
+            
+            window,location.href = "/Timetabler/?user="+myParam;
+        } else {
+            window.location.href = "/Home/Index";
+        }
+
+    })
+
+    $("#createSideMenu").click(function () {
+
+        var myParam = location.search.split('user=')[1];
+        alert(myParam);
+        if (myParam != null) {
+
+            window, location.href = "/Create/?user=" + myParam;
+        } else {
+            window.location.href = "/Home/Index";
+        }
+
+    })
+
 });
 
 function LoggedIn() {
