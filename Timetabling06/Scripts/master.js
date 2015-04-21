@@ -32,6 +32,13 @@
 
     })
 
+    $("#logoutSideMenu").click(function () {
+
+        
+            window.location.href = "/Home/Index";
+
+    })
+
 });
 
 function LoggedIn() {

@@ -23,7 +23,8 @@ namespace Timetabling06.Controllers
                 
                 return View(data);
             }
-              public ActionResult Index()
+        }
+              /*public ActionResult Index()
         {
             ViewBag.roomNumber = new SelectList(db.rooms, "roomNumber", "buildingCode").Distinct();
 
@@ -32,7 +33,7 @@ namespace Timetabling06.Controllers
             ViewBag.building = new SelectList(db.buildings, "code", "name").Distinct();
 
             return View();
-        }
+        }*/
 
         protected override void Dispose(bool disposing)
         {
@@ -43,4 +44,3 @@ namespace Timetabling06.Controllers
             
         }
     }
-}
