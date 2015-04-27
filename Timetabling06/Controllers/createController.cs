@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Validation;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using Timetabling06.Models;
 using Timetabling06.ModelViews;
 
@@ -52,6 +54,66 @@ namespace Timetabling06.Controllers
             
             
         }
+        public ActionResult Submit(createObjects JSONdata) {
+            request reqData = new request();
+            reqData.moduleCode = JSONdata.requests.moduleCode;
+            reqData.deptCode = JSONdata.requests.deptCode;
+            reqData.priority = JSONdata.requests.priority;
+            reqData.day = JSONdata.requests.day;
+            reqData.start = JSONdata.requests.start;
+            reqData.length = JSONdata.requests.length;
+            reqData.weeks = JSONdata.requests.weeks;
+            reqData.type = JSONdata.requests.type;
+            reqData.otherReqs = JSONdata.requests.otherReqs;
+            reqData.roundID = JSONdata.requests.roundID;
+            ViewBag.module = reqData.weeks;
+            if(JSONdata.requests.otherReqs==null){
+                reqData.otherReqs = "None";
+            }
+            reqData.sent = 1;
+            reqData.status = 0;
+            reqData.viewed = 0;
+            reqData.booked = 0;
+            db.requests.Add(reqData);
+            
+            try
+            {
+                // Your code...
+                // Could also be before try if you know the exception occurs in SaveChanges
+
+                db.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                foreach (var eve in e.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw;
+            }
+            if(Convert.ToInt16(JSONdata.requests.weeks)==0){
+                for (var i = 0; i < JSONdata.weeks.Length; i++) {
+                    weeks_request newWeek = new weeks_request();
+                    newWeek.week = Convert.ToInt16(JSONdata.weeks[i]);
+                    newWeek.requestID = reqData.requestID;
+                    db.weeks_request.Add(newWeek);
+                    db.SaveChanges();
+                }
+            }
+
+            for (var q = 0; q < JSONdata.facilities.Length;q++ )
+            {
+                
+            }
+            return View();
+        }
+
 
         public ActionResult _roomChecker(int roomNum, int requestNum, String user, int roundID, int day, int time, int length,int[] weeks,int students,String roomType,String park, String[] facilities){
             var rooms = db.rooms.Include(r=>r.building).Include(r=>r.facilities);
@@ -71,6 +133,8 @@ namespace Timetabling06.Controllers
 
                 }
             }
+            
+
 
             var deptRooms = db.rooms.Include(r => r.building).Include(r => r.facilities).Where(r=>r.belongsTo.Equals(user));
 

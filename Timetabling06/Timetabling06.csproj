@@ -183,6 +183,7 @@
     <Compile Include="Models\weeks_request.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ModelViews\createObjects.cs" />
     <Compile Include="ModelViews\HomeModel.cs" />
     <Compile Include="ModelViews\ModuleDepartment.cs" />
     <Compile Include="ModelViews\RequestDepartment.cs" />
@@ -333,6 +334,7 @@
     <Content Include="Views\pending\Index.cshtml" />
     <Content Include="Views\create\Index.cshtml" />
     <Content Include="Views\create\_roomChecker.cshtml" />
+    <Content Include="Views\create\Submit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

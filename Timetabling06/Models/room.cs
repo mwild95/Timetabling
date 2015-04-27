@@ -17,8 +17,8 @@ namespace Timetabling06.Models
         public room()
         {
             this.room_request = new HashSet<room_request>();
-            this.facilities = new HashSet<facility>();
             this.requests = new HashSet<request>();
+            this.facilities = new HashSet<facility>();
         }
     
         public string roomNumber { get; set; }
@@ -31,7 +31,7 @@ namespace Timetabling06.Models
         public virtual building building { get; set; }
         public virtual department department { get; set; }
         public virtual ICollection<room_request> room_request { get; set; }
-        public virtual ICollection<facility> facilities { get; set; }
         public virtual ICollection<request> requests { get; set; }
+        public virtual ICollection<facility> facilities { get; set; }
     }
 }

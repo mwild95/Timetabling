@@ -18,8 +18,8 @@ namespace Timetabling06.Models
         {
             this.room_request = new HashSet<room_request>();
             this.weeks_request = new HashSet<weeks_request>();
-            this.facilities = new HashSet<facility>();
             this.rooms = new HashSet<room>();
+            this.facilities = new HashSet<facility>();
         }
     
         public int requestID { get; set; }
@@ -32,20 +32,20 @@ namespace Timetabling06.Models
         public string weeks { get; set; }
         public string type { get; set; }
         public string otherReqs { get; set; }
-        public Nullable<System.DateTime> date { get; set; }
         public int roundID { get; set; }
         public Nullable<int> requestLink { get; set; }
         public byte sent { get; set; }
         public byte status { get; set; }
         public byte viewed { get; set; }
         public byte booked { get; set; }
+        public Nullable<System.DateTime> date { get; set; }
     
         public virtual department department { get; set; }
         public virtual module module { get; set; }
         public virtual round round { get; set; }
         public virtual ICollection<room_request> room_request { get; set; }
         public virtual ICollection<weeks_request> weeks_request { get; set; }
-        public virtual ICollection<facility> facilities { get; set; }
         public virtual ICollection<room> rooms { get; set; }
+        public virtual ICollection<facility> facilities { get; set; }
     }
 }

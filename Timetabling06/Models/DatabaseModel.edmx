@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="team06Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="team06Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="announcements">
           <Key>
             <PropertyRef Name="annID" />
@@ -14,8 +14,6 @@
           <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="content" Type="varchar" MaxLength="500" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'team06.team06.booking' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="booking">
           <Key>
             <PropertyRef Name="requestID" />
@@ -79,7 +77,7 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
           <Property Name="status" Type="tinyint" Nullable="false" />
           <Property Name="viewed" Type="tinyint" Nullable="false" />
           <Property Name="booked" Type="tinyint" Nullable="false" />
-          <Property Name="date" Type="datetime" StoreGeneratedPattern="Computed" />
+          <Property Name="date" Type="datetime" />
         </EntityType>
         <EntityType Name="request_facility">
           <Key>
@@ -413,6 +411,7 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
         </Association>
         <EntityContainer Name="team06ModelStoreContainer">
           <EntitySet Name="announcements" EntityType="Self.announcements" Schema="team06" store:Type="Tables" />
+          <EntitySet Name="booking" EntityType="Self.booking" Schema="team06" store:Type="Tables" />
           <EntitySet Name="building" EntityType="Self.building" Schema="team06" store:Type="Tables" />
           <EntitySet Name="department" EntityType="Self.department" Schema="team06" store:Type="Tables" />
           <EntitySet Name="facility" EntityType="Self.facility" Schema="team06" store:Type="Tables" />
@@ -427,13 +426,6 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
           <EntitySet Name="staff" EntityType="Self.staff" Schema="team06" store:Type="Tables" />
           <EntitySet Name="staff_module" EntityType="Self.staff_module" Schema="team06" store:Type="Tables" />
           <EntitySet Name="weeks_request" EntityType="Self.weeks_request" Schema="team06" store:Type="Tables" />
-          <EntitySet Name="booking" EntityType="Self.booking" store:Type="Tables" store:Schema="team06">
-            <DefiningQuery>SELECT 
-    [booking].[requestID] AS [requestID], 
-    [booking].[buildingCode] AS [buildingCode], 
-    [booking].[roomNumber] AS [roomNumber]
-    FROM [team06].[booking] AS [booking]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_booking_request" Association="Self.FK_booking_request">
             <End Role="request" EntitySet="request" />
             <End Role="booking" EntitySet="booking" />
@@ -511,7 +503,8 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
             <End Role="weeks_request" EntitySet="weeks_request" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="team06Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -581,20 +574,20 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
           <Property Name="weeks" Type="String" MaxLength="35" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="type" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="otherReqs" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="date" Type="DateTime" annotation:StoreGeneratedPattern="Computed" />
           <Property Name="roundID" Type="Int32" Nullable="false" />
           <Property Name="requestLink" Type="Int32" />
           <Property Name="sent" Type="Byte" Nullable="false" />
           <Property Name="status" Type="Byte" Nullable="false" />
           <Property Name="viewed" Type="Byte" Nullable="false" />
           <Property Name="booked" Type="Byte" Nullable="false" />
+          <Property Name="date" Type="DateTime" Precision="3" />
           <NavigationProperty Name="department" Relationship="Self.FK_request_department" FromRole="request" ToRole="department" />
           <NavigationProperty Name="module" Relationship="Self.FK_request_module" FromRole="request" ToRole="module" />
           <NavigationProperty Name="round" Relationship="Self.FK_request_round" FromRole="request" ToRole="round" />
           <NavigationProperty Name="room_request" Relationship="Self.FK_room_request_request" FromRole="request" ToRole="room_request" />
           <NavigationProperty Name="weeks_request" Relationship="Self.FK_weeks_request_request" FromRole="request" ToRole="weeks_request" />
-          <NavigationProperty Name="facilities" Relationship="Self.request_facility" FromRole="request" ToRole="facility" />
           <NavigationProperty Name="rooms" Relationship="Self.booking" FromRole="request" ToRole="room" />
+          <NavigationProperty Name="facilities" Relationship="Self.request_facility" FromRole="request" ToRole="facility" />
         </EntityType>
         <EntityType Name="room">
           <Key>
@@ -610,8 +603,8 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
           <NavigationProperty Name="building" Relationship="Self.FK_room_building" FromRole="room" ToRole="building" />
           <NavigationProperty Name="department" Relationship="Self.FK_room_department" FromRole="room" ToRole="department" />
           <NavigationProperty Name="room_request" Relationship="Self.FK_room_request_room" FromRole="room" ToRole="room_request" />
-          <NavigationProperty Name="facilities" Relationship="Self.room_facility" FromRole="room" ToRole="facility" />
           <NavigationProperty Name="requests" Relationship="Self.booking" FromRole="room" ToRole="request" />
+          <NavigationProperty Name="facilities" Relationship="Self.room_facility" FromRole="room" ToRole="facility" />
         </EntityType>
         <EntityType Name="room_request">
           <Key>
@@ -809,6 +802,10 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="booking">
+          <End Role="request" Type="Self.request" Multiplicity="*" />
+          <End Role="room" Type="Self.room" Multiplicity="*" />
+        </Association>
         <Association Name="request_facility">
           <End Role="facility" Type="Self.facility" Multiplicity="*" />
           <End Role="request" Type="Self.request" Multiplicity="*" />
@@ -820,10 +817,6 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
         <Association Name="staff_module">
           <End Role="module" Type="Self.module" Multiplicity="*" />
           <End Role="staff" Type="Self.staff" Multiplicity="*" />
-        </Association>
-        <Association Name="booking">
-          <End Role="request" Type="Self.request" Multiplicity="*" />
-          <End Role="room" Type="Self.room" Multiplicity="*" />
         </Association>
         <EntityContainer Name="team06Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="announcements" EntityType="Self.announcement" />
@@ -882,6 +875,10 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
             <End Role="semester" EntitySet="semesters" />
             <End Role="round" EntitySet="rounds" />
           </AssociationSet>
+          <AssociationSet Name="booking" Association="Self.booking">
+            <End Role="request" EntitySet="requests" />
+            <End Role="room" EntitySet="rooms" />
+          </AssociationSet>
           <AssociationSet Name="request_facility" Association="Self.request_facility">
             <End Role="facility" EntitySet="facilities" />
             <End Role="request" EntitySet="requests" />
@@ -893,10 +890,6 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
           <AssociationSet Name="staff_module" Association="Self.staff_module">
             <End Role="module" EntitySet="modules" />
             <End Role="staff" EntitySet="staffs" />
-          </AssociationSet>
-          <AssociationSet Name="booking" Association="Self.booking">
-            <End Role="request" EntitySet="requests" />
-            <End Role="room" EntitySet="rooms" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -954,23 +947,23 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
           <EntitySetMapping Name="requests">
             <EntityTypeMapping TypeName="team06Model.request">
               <MappingFragment StoreEntitySet="request">
-                <ScalarProperty Name="start" ColumnName="start" />
                 <ScalarProperty Name="requestID" ColumnName="requestID" />
                 <ScalarProperty Name="moduleCode" ColumnName="moduleCode" />
                 <ScalarProperty Name="deptCode" ColumnName="deptCode" />
                 <ScalarProperty Name="priority" ColumnName="priority" />
                 <ScalarProperty Name="day" ColumnName="day" />
+                <ScalarProperty Name="start" ColumnName="start" />
                 <ScalarProperty Name="length" ColumnName="length" />
                 <ScalarProperty Name="weeks" ColumnName="weeks" />
                 <ScalarProperty Name="type" ColumnName="type" />
                 <ScalarProperty Name="otherReqs" ColumnName="otherReqs" />
-                <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="roundID" ColumnName="roundID" />
                 <ScalarProperty Name="requestLink" ColumnName="requestLink" />
                 <ScalarProperty Name="sent" ColumnName="sent" />
                 <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="viewed" ColumnName="viewed" />
                 <ScalarProperty Name="booked" ColumnName="booked" />
+                <ScalarProperty Name="date" ColumnName="date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1038,6 +1031,15 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="booking" TypeName="team06Model.booking" StoreEntitySet="booking">
+            <EndProperty Name="request">
+              <ScalarProperty Name="requestID" ColumnName="requestID" />
+            </EndProperty>
+            <EndProperty Name="room">
+              <ScalarProperty Name="roomNumber" ColumnName="roomNumber" />
+              <ScalarProperty Name="buildingCode" ColumnName="buildingCode" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="request_facility" TypeName="team06Model.request_facility" StoreEntitySet="request_facility">
             <EndProperty Name="facility">
               <ScalarProperty Name="facilityID" ColumnName="facilityID" />
@@ -1062,15 +1064,6 @@ warning 6002: The table/view 'team06.team06.booking' does not have a primary key
             </EndProperty>
             <EndProperty Name="staff">
               <ScalarProperty Name="staffID" ColumnName="staffID" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="booking" TypeName="team06Model.booking" StoreEntitySet="booking">
-            <EndProperty Name="request">
-              <ScalarProperty Name="requestID" ColumnName="requestID" />
-            </EndProperty>
-            <EndProperty Name="room">
-              <ScalarProperty Name="roomNumber" ColumnName="roomNumber" />
-              <ScalarProperty Name="buildingCode" ColumnName="buildingCode" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

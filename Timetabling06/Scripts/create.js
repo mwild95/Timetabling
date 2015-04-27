@@ -417,38 +417,90 @@ function timeChange(roomNo, RequestNo) {
 }
 
 function fillRooms(roomNo, RequestNo, buildingCode) {
+    var roomSelect = document.getElementById("roomSlctRoom" + roomNo + "Request" + RequestNo);
+    for (var i = roomSelect.options.length - 1; i >= 0 ; i--) {
+        roomSelect.remove(i);
+    }
+
+    for (var q = 0; q < rooms.length; q++) {
+        if (buildingCode == 'Any') {
+            var newOption = document.createElement("option");
+            newOption.text = rooms[q].buildingCode + rooms[q].roomNumber;
+            newOption.value = rooms[q].buildingCode + rooms[q].roomNumber;
+            roomSelect.add(newOption);
+        } else {
+            if (rooms[q].buildingCode == buildingCode) {
+                var newOption = document.createElement("option");
+                newOption.text = rooms[q].buildingCode+rooms[q].roomNumber;
+                newOption.value = rooms[q].buildingCode + rooms[q].roomNumber;
+                roomSelect.add(newOption);
+            }
+        }
         
+        
+    }
 }
 
-/*var moduleCodeSelect = document.getElementById("moduleCodeSlctRequest" + RequestNo);
-var moduleTitleSelect = document.getElementById("modulesTitleSlctRequest" + RequestNo);
 
+function sendRequest() {
+    var roomNo = 1;
+    var RequestNo = 1;
+    var userVar = deptCode;
+    var moduleCodeVar = $("#moduleCodeSlctRequest" + RequestNo).val();
+    moduleCodeVar = moduleCodeVar.substr(2, moduleCodeVar.length - 1);
+    var priorityVar = $("#priorityChkRequest" +RequestNo).is(":checked");
+    var roundIDVar = $("#roundSelectRequest" + RequestNo + " :selected").val();
+    var dayVar = $("#daySlctRoom" + roomNo + "Request" + RequestNo).val();
+    var timeVar = $("#timeSlctRoom" + roomNo + "Request" + RequestNo).val();
+    var lengthVar = $("#timeSpinnerRoom" + roomNo + "Request" + RequestNo).val();
+    var weeksVar = [];
+    var weeksArray = $("#weeksTbleRoom" + roomNo + "Request" + RequestNo + " :checked");
+    for (var i = 0; i < weeksArray.length ; i++) {
+        weeksVar[weeksVar.length] = weeksArray[i].value.toString();
+    }
+    var weeksTest = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
+    var weeksNum = 0;
+    if (weeksTest.join() === weeksVar.join()) {
+        weeksNum = 1;
+    }
+    var studentsVar = $("#capacitySpinnerRoom" + roomNo + "Request" + RequestNo).val();
+    var roomTypeVar = $("#roomTypeDivRoom" + roomNo + "Request" + RequestNo + " :checked").attr("value");
+    var parkVar = $("#parkDivRoom" + roomNo + "Request" + RequestNo + " :checked").attr("value");
+    var facilitiesObject = $("#facilitiesTableRoom" + roomNo + "Request" + RequestNo + " :checked");
+    var facilitiesValue = [];
+    for (var q = 0; q < facilitiesObject.length; q++) {
+        facilitiesValue[facilitiesValue.length] = facilitiesObject[q].value;
+    }
+    var otherReqs = $("#specialReqsRoom"+roomNo + "Request"+RequestNo).val();
 
+    var requestData = {
+        "deptCode": userVar,
+        "roundID": parseInt(roundIDVar),
+        "moduleCode": moduleCodeVar,
+        "priority": parseInt(priorityVar),
+        "day": parseInt(dayVar),
+        "start": parseInt(timeVar)-8,
+        "length": parseInt(lengthVar),
+        "weeks": weeksNum,
+        "capacity": parseInt(studentsVar),
+        "type": roomTypeVar,
+        "otherReqs": otherReqs
+    };
+    var obj = JSON.stringify(requestData);
 
-
-for (var q = moduleCodeSelect.options.length - 1; q >= 0; q--) {
-    moduleCodeSelect.remove(q);
-    moduleTitleSelect.remove(q);
+    $.ajax({
+        type: 'POST',
+        url: '/create/Submit',
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert("Submitting Failed. Please Reload and Try Again.");
+        },
+        data: JSON.stringify({ requests: requestData, weeks: weeksVar, facilities: facilitiesValue }),
+        datatype: 'html',
+        contentType: 'application/json',
+        processData: false,
+        async:false,
+        success: function (data) {
+            alert(data);
+        }
+    });
 }
-
-for (var i = 0; i < moduleTitle.length; i++) {
-    if (PartCode == 'Any') {
-        var newOptionCode = document.createElement("option");
-        newOptionCode.text = moduleTitle[i];
-        moduleTitleSelect.add(newOptionCode);
-
-        var newOptionTitle = document.createElement("option");
-        newOptionTitle.text = deptCode + moduleCode[i];
-        moduleCodeSelect.add(newOptionTitle);
-    }
-    if (moduleCode[i].substring(0, 1) == PartCode) {
-        var newOptionCode = document.createElement("option");
-        newOptionCode.text = moduleTitle[i];
-        moduleTitleSelect.add(newOptionCode);
-
-        var newOptionTitle = document.createElement("option");
-        newOptionTitle.text = deptCode + moduleCode[i];
-        moduleCodeSelect.add(newOptionTitle);
-    }
-
-}*/

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a8ef6dc7b7d942eb93a2ec9542e2c71a" Name="Diagram1">
+      <Diagram DiagramId="ced1bc8c0c6a4ac582adfecea848599d" Name="Diagram1">
         <EntityTypeShape EntityType="team06Model.announcement" Width="1.5" PointX="7.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="team06Model.building" Width="1.5" PointX="8.25" PointY="3.25" IsExpanded="true" />
         <EntityTypeShape EntityType="team06Model.department" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
@@ -28,10 +28,10 @@
         <AssociationConnector Association="team06Model.FK_weeks_request_request" ManuallyRouted="false" />
         <AssociationConnector Association="team06Model.FK_room_request_room" ManuallyRouted="false" />
         <AssociationConnector Association="team06Model.FK_round_semester" ManuallyRouted="false" />
+        <AssociationConnector Association="team06Model.booking" ManuallyRouted="false" />
         <AssociationConnector Association="team06Model.request_facility" ManuallyRouted="false" />
         <AssociationConnector Association="team06Model.room_facility" ManuallyRouted="false" />
         <AssociationConnector Association="team06Model.staff_module" ManuallyRouted="false" />
-        <AssociationConnector Association="team06Model.booking" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
