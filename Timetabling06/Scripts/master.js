@@ -9,7 +9,7 @@
     $("#homeSideMenu").click(function () {
         
         var myParam = location.search.split('user=')[1];
-        alert(myParam);
+        
         if (myParam != null) {
             
             window,location.href = "/Timetabler/?user="+myParam;
@@ -22,7 +22,7 @@
     $("#createSideMenu").click(function () {
 
         var myParam = location.search.split('user=')[1];
-        alert(myParam);
+        
         if (myParam != null) {
 
             window, location.href = "/Create/?user=" + myParam;

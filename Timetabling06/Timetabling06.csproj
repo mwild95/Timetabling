@@ -186,6 +186,7 @@
     <Compile Include="ModelViews\HomeModel.cs" />
     <Compile Include="ModelViews\ModuleDepartment.cs" />
     <Compile Include="ModelViews\RequestDepartment.cs" />
+    <Compile Include="ModelViews\roomCheckerObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -331,6 +332,7 @@
     <Content Include="Views\pending\Edit.cshtml" />
     <Content Include="Views\pending\Index.cshtml" />
     <Content Include="Views\create\Index.cshtml" />
+    <Content Include="Views\create\_roomChecker.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

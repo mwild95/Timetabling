@@ -14,5 +14,9 @@ namespace Timetabling06.ModelViews
         public ICollection<building> buildings { get; set; }
         public ICollection<room> rooms { get; set; }
         public ICollection<round> rounds { get; set; }
+        public ICollection<String> roomTypes { get; set; }
+        public ICollection<String> facilities { get; set; }
+        public ICollection<String> parks { get; set; }
+        
     }
 }

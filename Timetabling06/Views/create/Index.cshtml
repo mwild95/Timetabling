@@ -2,8 +2,93 @@
 
     <head>
     
-       <script language="JavaScript" type="text/javascript" src="~/Scripts/create.js"></script>
-    
+       
+        <script type="text/javascript">
+            var deptCode = "@Model.modules.First().deptCode";
+            var facilities = [];
+            var roomType = [];
+            var moduleTitle = [];
+            var moduleCode = [];
+            var roundTitles = [];
+            var roundID = [];
+            var roundWeeks = [];
+            var parks = [];
+            var buildings = [];
+            var rooms = [];
+            @foreach(var round in Model.rounds){
+                <text>
+            var currentTitle = "";
+            if (@round.roundNo == 0)
+            {
+                currentTitle += "AdHoc Round - Semester @round.semester - ";
+                if (@round.semester == 1)
+                {
+                    currentTitle += "@round.year/@round.year+1";
+                }
+                else
+                {
+                     var firstYear = @round.year - 1;
+                    currentTitle += firstYear + "/@round.year"
+                }
+            }
+            else
+            {
+
+                currentTitle += "Round @round.roundNo - Semester @round.semester";
+                if (@round.semester == 1)
+                {
+                    currentTitle += "@round.year/"+@round.year+1;
+                }
+                else
+                {
+                    var firstYear = @round.year - 1;
+                    currentTitle += firstYear + "/@round.year";
+                }
+
+            }
+                    roundTitles[roundTitles.length] = currentTitle
+                    
+                    roundID[roundID.length] = @round.roundID;
+                    roundWeeks[roundWeeks.length] = @round.semester1.weeks;
+            </text>
+            }
+
+            @foreach(var module in Model.modules){
+                <text>
+                    moduleTitle[moduleTitle.length] = "@module.moduleTitle";
+                    moduleCode[moduleCode.length] = "@module.moduleCode";
+            </text>
+            }
+
+            @foreach (var facility in Model.facilities) { 
+                <text>
+                    facilities[facilities.length] = "@facility";
+            </text>
+            }
+            @foreach (var roomType in Model.roomTypes) { 
+                <text>
+                    roomType[roomType.length] = "@roomType";
+            </text>
+            }
+            @foreach(var park in Model.parks){
+                <text>
+                    parks[parks.length] = "@park";
+            </text>
+            }
+
+            @foreach (var building in Model.buildings) { 
+                <text>
+            buildings[buildings.length] = {buildingCode:'@building.code', name:'@building.name', park:'@building.park'};
+            </text>
+            }
+            @foreach (var room in Model.rooms) { 
+                <text>
+            rooms[rooms.length] = {roomNumber:'@room.roomNumber', buildingCode:'@room.buildingCode'};
+            </text>
+            }
+                      
+        </script>
+        <script language="JavaScript" type="text/javascript" src="~/Scripts/create.js"></script>
     </head>
 
 
@@ -12,70 +97,50 @@
 }
 
 
-<div class="container">
-    <div class="container" style="width:60%; display:inline-block; float:left; max-height:71vh;">
-        <div class="container" style="overflow-y:auto; max-height:71vh;">
-            <div class="row">
-                <div class="item">
-                    <div class="well">
+<div class="container" style="height:72vh">
+    <div class="container" style="width:40%; display:inline-block; float:left; max-height:100%; height:100%">
+        <div class="container" style="max-height:100%; height:100%">
+            <div class="row" style="max-height:100%; height:100%">
+                <div class="item" style="max-height:50%; width:100%;">
+                    <div class="well" style="max-height:100%; height:100%">
                         <h3 style="display:inline-block">Round Details</h3>
                         <button type="button" class="btn btn-info btn-xs" style="display:inline-block; float:right;" id="roundHelpBtn">?</button>
                         <h5>Round: </h5>
 
-                        
 
-                        <select class="form-control input-sm" style="font-size:0.9em;">
+
+                        <select class="form-control input-sm" style="font-size:0.9em;" id="roundSelectRequest1">
 
                             @foreach (var item in Model.rounds)
                             {
 
-                                <option id="@item.roundID">
+                                <option id="@item.roundID" value="@item.semester1.weeks">
 
                                     @if (item.roundNo == 0)
                                     {
-
                                         @: AdHoc Round - Semester @item.semester -
-
                                         if (item.semester == 1)
                                         {
-
                                             @item.year@:/@item.year+1
-
                                         }
-
                                         else
                                         {
-
                                             var firstYear = item.year - 1;
-
                                             @firstYear@:/@item.year
-
-
                                         }
-
                                     }
-
                                     else
                                     {
 
                                         @: Round @item.roundNo - Semester @item.semester
-
-
                                         if (item.semester == 1)
                                         {
-
                                             @item.year@:/@item.year+1
-
                                         }
-
                                         else
                                         {
-
                                             var firstYear = item.year - 1;
-
                                             @firstYear@:/@item.year
-
-
                                         }
 
                                     }
@@ -92,7 +157,7 @@
 
                             <label class="checkbox-inline">
 
-                                Priority Booking? <input type="checkbox" id="priorityChk" value="priority">
+                                Priority Booking? <input type="checkbox" id="priorityChkRequest1" value="priority">
 
                             </label>
 
@@ -101,12 +166,12 @@
 
                     </div>
                 </div>
-                <div class="item">
-                    <div class="well">
+                <div class="item" style="max-height:50%; width:100%;">
+                    <div class="well" style="max-height:100%; height:100%">
                         <h3 style="display:inline-block">Module Details</h3>
                         <button type="button" class="btn btn-info btn-xs" style="display:inline-block; float:right;" id="moduleHelpBtn">?</button>
                         <h5>Part:</h5>
-                        <select class="form-control input-sm" style="font-size:0.9em;">
+                        <select class="form-control input-sm" style="font-size:0.9em;" id="partSlctRequest1" onchange="generateModuleSelect(1,this.value)">
                             <option selected>Any</option>
                             <option>A</option>
                             <option>B</option>
@@ -114,49 +179,169 @@
                             <option>D</option>
                             <option>P</option>
                         </select>
-                        
-                            <select class="form-control input-sm" style="font-size:0.9em;">
-                            @foreach (var module in Model.modules) { 
+                        <h5>Module Code:</h5>
+                        <select class="form-control input-sm" style="font-size:0.9em;" id="moduleCodeSlctRequest1" onchange="selectLink(document.getElementById('moduleCodeSlctRequest1'),document.getElementById('modulesTitleSlctRequest1'));">
+                            @foreach (var module in Model.modules)
+                            {
                                 <option>
                                     @module.deptCode@module.moduleCode
                                 </option>
                             }
-                             </select>
-                            <select class="form-control input-sm" style="font-size:0.9em;">
-                            @foreach (var moduleTitle in Model.modules){
+                        </select>
+                        <h5>Module Title:</h5>
+                        <select class="form-control input-sm" style="font-size:0.9em;" id="modulesTitleSlctRequest1" onchange="selectLink(document.getElementById('modulesTitleSlctRequest1'),document.getElementById('moduleCodeSlctRequest1'));">
+                            @foreach (var moduleTitle in Model.modules)
+                            {
                                 <option>
                                     @moduleTitle.moduleTitle
                                 </option>
                             }
-                            </select>
-                        
+                        </select>
+
                     </div>
                 </div>
-                <div class="item">
-                    <div class="well">
-                        Testing
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="well">
-                        Testing
-                    </div>
-                </div>
+                
             </div>
         </div>
 
     </div>
-    <div class="container" style="width:40%; display:inline-block; float:right; max-height:72vh;">
-        <div id="rooms_choices" style="max-height:72vh; overflow:auto;">
+    <div class="container" style="width:60%; display:inline-block; float:right; max-height:100%; height:100%">
+        <div id="rooms_choicesRequest1" style="max-height:100%; height:100%; overflow:auto;">
             <ul>
-                <li><a href="#room1">Room 1</a></li>
+                <li><a href="#room1Request1">Room 1</a></li>
             </ul>
-            <div id="room1">
-                <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
-            </div>
-        </div>
+            <div id="room1Request1">
+                <div class="well" style="width:100%;" hidden><h4>Use Timetable Auto-Fill - Insert Timetable Image Here</h4></div>
+                <div class="well" style="width:100%;">
+                    <h5 style="display:inline-block">Time Slot: </h5>
+                    <button type="button" class="btn btn-info btn-xs" style="display:inline-block; float:right;" id="timeHelpBtn">?</button>
+                    <div>
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:33%;">
+                                    <select class="form-control input-sm" style="font-size:0.9em; display:inline-block;" id="daySlctRoom1Request1" onchange='updateRooms(1,1);'>
+                                        <option value="1">Monday </option>
+                                        <option value="2">Tuesday</option>
+                                        <option value="3">Wednesday</option>
+                                        <option value="4">Thursday</option>
+                                        <option value="5">Friday</option>
+                                    </select>
+                                </td>
+                                <td style="width:25%;">
+                                    <select class="form-control input-sm" style="font-size:0.9em; display:inline-block;" id="timeSlctRoom1Request1" onchange="timeChange(1,1);">
+                                        <option value="9">09:00</option>
+                                        <option value="10">10:00</option>
+                                        <option value="11">11:00</option>
+                                        <option value="12">12:00</option>
+                                        <option value="13">13:00</option>
+                                        <option value="14">14:00</option>
+                                        <option value="15">15:00</option>
+                                        <option value="16">16:00</option>
+                                        <option value="17">17:00</option>
+                                    </select>
+                                </td>
+                                <td style="width:33%;">
+                                    <div style="display:inline-block; font-size:0.9em;">
+                                        <div class="input-group number-spinner">
+                                            <span class="input-group-btn data-dwn">
+                                                <button class="btn btn-default btn-primary test" data-dir="dwn" id="lengthDownRoom1Request1"><span class="glyphicon glyphicon-minus"></span></button>
+                                            </span>
+                                            <input type="text" class="form-control text-center" value="1" min="1" max="9" id="timeSpinnerRoom1Request1" />
+                                            <span class="input-group-btn data-up">
+                                                <button class="btn btn-default btn-primary test" data-dir="up" id="lengthUpRoom1Request1"><span class="glyphicon glyphicon-plus"></span></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                </td>
+                                <td style="width:8%;">
+                                    <h6 style="display:inline-block;">Hour(s)</h6>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <br />
+                    <h5 style="display:inline-block">Weeks: </h5>
+                    
+                    <table id="weeksTbleRoom1Request1" style="text-align:center; width:100%;"></table>
+                    
+                    <h5 style="display:inline-block;">No. of Students: </h5>
+                    
+                    <div class="input-group number-spinner">
+                        <span class="input-group-btn data-dwn">
+                            <button class="btn btn-default btn-primary" data-dir="dwn"><span class="glyphicon glyphicon-minus"></span></button>
+                        </span>
+                        <input type="text" class="form-control text-center" value="40" min="10" max="400" id="capacitySpinnerRoom1Request1">
+                        <span class="input-group-btn data-up">
+                            <button class="btn btn-default btn-primary" data-dir="up"><span class="glyphicon glyphicon-plus"></span></button>
+                        </span>
+                    </div>
+                </div>
+                <!--ROOM TYPES RADIO/ SELECT BUTTON CODE-->
+                <div class="well" style="width:100%;">
+                    <table style="width:100%;">
+                        <tr>
+                            <td>
+                                <div>
+                                    <h5 style="display:inline-block;">Room Type:</h5>
+                                    <button type="button" class="btn btn-primary btn-xs" style="display:inline-block; padding-left:5px;" id="roomTypeBtn">▼</button>
+
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <h5 style="display:inline-block;">Park: </h5>
+                                    <button type="button" class="btn btn-primary btn-xs" style="display:inline-block; padding-left:5px;" id="parkBtn">▼</button>
+
+                                </div>
+                            </td>
+                            <td>
+                                <div>
+                                    <h5 style="display:inline-block;">Room Facilities:</h5>
+                                    <button type="button" class="btn btn-primary btn-xs" style="display:inline-block; padding-left:5px;" id="facilitiesBtn">▼</button>
+
+                                </div>
+                            </td>
+                            <td>
+                                <div >
+                                    <h5 style="display:inline-block;">Special Requirements:</h5>
+                                    <button type="button" class="btn btn-primary btn-xs" style="display:inline-block; padding-left:5px;" id="specialReqsBtn">▼</button>
+
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    
+                    
+                    
+                    <div id="roomTypeDivRoom1Request1" hidden></div>
+                    <div id="parkDivRoom1Request1"></div>
+                    <div id="facilitiesTableRoom1Request1"></div>
+                    <div id="specialReqsDiv" hidden>
+                        <textarea class="form-control" placeholder="Enter any special requirements here."></textarea>
+                    </div>
+                </div>
+                <!--END OF RADIO BUTTON CODE-->
+                <div class="well" style="width:100%;" id="roomBuildingSlctRoom1Request1">
+                    <div style="display:inline-block; ">
+                        <h5 >Building:</h5>
+                        <div id="buildingsSlctRoom1Request1"></div>
+                    </div>
+                    <div style="display:inline-block;">
+                        <h5>Room:</h5>
+                        <div id="roomsSlctRoom1Request1"></div>
+                    </div>
+                </div>
+          </div>
+        
     </div>
+        <button type="button" class="btn btn-primary btn-sm" style="display:inline-block; float:right; margin-top:5px;" id="addRoomBtnRequest1">Add Booking</button>
+        
 </div>
+
+
 
 
 
@@ -170,9 +355,9 @@
 <div id="helpRounds" title="Rounds Help">
 
     <p>This section is where you can choose round specific attributes.<br /> <br />
-    
+
     The currently open rounds are displayed in the drop down box. You can select a round to submit your request in.<br /><br />
-    
+
     You can submit a priority request by ticking the check box.</p>
 
 </div>

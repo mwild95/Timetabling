@@ -1,0 +1,55 @@
+﻿@model Timetabling06.ModelViews.roomCheckerObject
+
+@{
+    ViewBag.Title = "_roomChecker";
+}
+@{
+    Layout = "";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        rooms = [];
+        @foreach (var room in Model.rooms) { 
+            <text>
+        rooms[rooms.length] = {roomNumber:'@room.roomNumber', buildingCode:'@room.buildingCode'};
+            </text>
+        }
+    })
+</script>
+
+<div class="well" style="width:100%;" id="roomBuildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)">
+    <div style="display:inline-block; ">
+        <h5>Building:</h5>
+        <select id="buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)" class="form-control" onchange="fillRooms(@Model.roomNo,@Model.RequestNo,$('#buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)').val())" style="width:auto;">
+            @if(Model.buildings==null){<text><option value="empty">No Suitable Buildings</option></text>}
+            else
+            {
+            <option value="Any">Any</option>
+                foreach (var building in Model.buildings)
+                {
+                    <text>
+                    <option value="@(building.code)">@(building.name)</option></text>
+                }
+            }
+            
+            
+        </select>
+        </div>
+    <div style="display:inline-block;">
+        <h5>Room:</h5>
+        <select id="roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)" class="form-control" style="width:auto;">
+            @if(Model.rooms == null){
+                <text><option value="empty">No Suitable Rooms</option></text>
+            }else{
+                foreach (var room in Model.rooms)
+                {
+                    <text>
+                    <option value="@(room.buildingCode)@(room.roomNumber)">@(room.buildingCode)@(room.roomNumber)</option></text>
+                }
+            }
+            
+        </select>
+        </div>
+    </div>
+       
