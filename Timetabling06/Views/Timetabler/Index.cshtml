@@ -8,4 +8,110 @@
 
     @Html.ActionLink("Archive", "Index", "Archive", new { user = Model.user.ToString() }, null)
     @Html.ActionLink("Rooms", "Index", "Rooms", new { user = Model.user.ToString() }, null)<br />
+
+<div>
+       
+        @Html.BeginForm("selectTimetable", "TimetablerControlller.cs")
+        {
+    
+        Select Park
+        @Html.DropDownList("park", (IEnumerable<SelectListItem>)ViewBag.park, new { @class = "dropdown" }));
+
+        Select Building
+        @Html.DropDownList("building", String.Empty);
+
+        Select Room
+        @Html.DropDownList("roomNumber", String.Empty);
+
+        Select Week
+        @Html.DropDownList("Weeks", new SelectList(new[] { "Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6", "Week 7", "Week 8", "Week 9", "Week 10", "Week 11", "Week 12" }))
+
+        <button type="submit">next</button>
+        }
+   
+    <h1>Test Form</h1>
+    <form action="~/Views/Timetabler/show.cshtml" method="post">
+
+        Select Park
+        @Html.DropDownList("park", (IEnumerable<SelectListItem>)ViewBag.park, new { @class = "dropdown" }));
+
+        <input type="submit" value="save" />
+    </form>
+        <table border="1">
+            <tr>
+                <td></td>
+                <td>09:00-10:00</td>
+                <td>10:00-11:00</td>
+                <td>11:00-12:00</td>
+                <td>12:00-13:00</td>
+                <td>13:00-14:00</td>
+                <td>14:00-15:00</td>
+                <td>15:00-16:00</td>
+                <td>16:00-17:00</td>
+                <td>17:00-18:00</td>
+            </tr>
+            <tr>
+                <td>Monday</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Tuesday</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Wednesday</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Thursday</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Friday</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+ 
+ </div>
+
 </div>
