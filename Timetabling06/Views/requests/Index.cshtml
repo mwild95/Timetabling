@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Timetabling06.Models.request>
+
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.priority)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.day)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.start)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.length)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.weeks)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.otherReqs)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.requestLink)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.viewed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.booked)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.department.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.module.moduleTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.round.roundID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.priority)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.day)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.start)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.length)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.weeks)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.otherReqs)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.requestLink)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.viewed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.booked)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.department.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.module.moduleTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.round.roundID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.requestID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.requestID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.requestID })
+        </td>
+    </tr>
+}
+
+</table>

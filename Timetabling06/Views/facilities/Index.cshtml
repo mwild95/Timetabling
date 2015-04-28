@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Timetabling06.Models.facility>
+
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Index</h2>
+    <!--Select boxes to filter-->
+<div id="filter">
+    <!--Textbox to search-->
+    <label for="searchBox">Search: </label><input id="searchBox" type="text" placeholder="type to search" />
+</div>
+<label for="searchResult">Searching for </label><input id="searchResult" type="text" />
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.facilityName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.facilityName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.facilityID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.facilityID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.facilityID })
+        </td>
+    </tr>
+}
+
+</table>
+<script type="text/javascript">
+    
+    /* Initiates search  */
+    $('#filter').on('change keyup', function () {
+
+        //Reset room to first option if selected building changed
+        $('#buildings').change(function () {
+            $('#rooms option:eq(0)').prop('selected', true);
+        });
+
+        gatherSearchFilters();
+        searchRows(searchString);
+
+    });
+    /* Populate hidden search result field with search filters */
+    function gatherSearchFilters() {
+        searchString = '';
+        $('#filter').children('input, select').each(function () {
+            searchString += $(this).val() + ' ';
+        });
+        searchString = $.trim(searchString);
+        $('#searchResult').val(searchString);
+        return (searchString);
+    }
+
+    /* Search rows based on filter, deletes unmatched rows, shows matched ones  */
+    function searchRows(searchString) {
+        var searchArray = searchString.split(' ');
+        $('tr:not(:has(th))').each(function () { //Loop through each table data
+            var tableContent = $(this).text();
+            var continueLoop = true;
+            var i = 0;
+            while (continueLoop == true && i <= searchArray.length) {
+                if (tableContent.search(new RegExp(searchArray[i], "i")) < 0) { //If word not found
+                    continueLoop = false;
+                }
+                else i++;
+            }
+            if (continueLoop == false)
+                $(this).fadeOut();
+
+            else
+                $(this).fadeIn();
+        });
+    }
+</script>

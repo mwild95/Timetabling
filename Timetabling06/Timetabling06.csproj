@@ -119,14 +119,19 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\adminController.cs" />
     <Compile Include="Controllers\archiveController.cs" />
     <Compile Include="Controllers\buildingsController.cs" />
     <Compile Include="Controllers\createController.cs" />
     <Compile Include="Controllers\departmentsController.cs" />
+    <Compile Include="Controllers\facilitiesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\modulesController.cs" />
     <Compile Include="Controllers\pendingController.cs" />
+    <Compile Include="Controllers\requestsController.cs" />
     <Compile Include="Controllers\roomsController.cs" />
+    <Compile Include="Controllers\roundsController.cs" />
+    <Compile Include="Controllers\staffsController.cs" />
     <Compile Include="Controllers\TimetablerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -335,6 +340,28 @@
     <Content Include="Views\create\Index.cshtml" />
     <Content Include="Views\create\_roomChecker.cshtml" />
     <Content Include="Views\create\Submit.cshtml" />
+    <Content Include="Views\admin\Index.cshtml" />
+    <Content Include="Views\facilities\Create.cshtml" />
+    <Content Include="Views\facilities\Delete.cshtml" />
+    <Content Include="Views\facilities\Details.cshtml" />
+    <Content Include="Views\facilities\Edit.cshtml" />
+    <Content Include="Views\facilities\Index.cshtml" />
+    <Content Include="Views\requests\Create.cshtml" />
+    <Content Include="Views\requests\Delete.cshtml" />
+    <Content Include="Views\requests\Details.cshtml" />
+    <Content Include="Views\requests\Edit.cshtml" />
+    <Content Include="Views\requests\Index.cshtml" />
+    <Content Include="Views\rounds\Create.cshtml" />
+    <Content Include="Views\rounds\Delete.cshtml" />
+    <Content Include="Views\rounds\Details.cshtml" />
+    <Content Include="Views\rounds\Edit.cshtml" />
+    <Content Include="Views\rounds\Index.cshtml" />
+    <Content Include="Views\staffs\Create.cshtml" />
+    <Content Include="Views\staffs\Delete.cshtml" />
+    <Content Include="Views\staffs\Details.cshtml" />
+    <Content Include="Views\staffs\Edit.cshtml" />
+    <Content Include="Views\staffs\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
