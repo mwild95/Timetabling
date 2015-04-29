@@ -1,0 +1,19 @@
+﻿@model Timetabling06.ModelViews.HomeModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h2>Admin Page</h2>
+<h4>Logged In As: @Model.user.name</h4>
+
+<div>
+    @Html.ActionLink("rooms", "Index", "rooms", new { user = Model.user.name}, null)<br />
+    @Html.ActionLink("rounds", "Index", "rounds", new { user = Model.user.name }, null)<br />
+    @Html.ActionLink("facilities", "Index", "facilities", new { user = Model.user.name }, null)<br />
+    @Html.ActionLink("requests", "Index", "requests", new { user = Model.user.name }, null)<br />
+    @Html.ActionLink("modules", "Index", "modules", new { user = Model.user.name }, null)<br />
+    @Html.ActionLink("staff", "Index", "staffs", new { user = Model.user.name }, null)<br />
+</div>
+

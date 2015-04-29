@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @RenderSection("scripts", required: false)
+
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/master.js")
+</head>
+<body>
+
+    <div id="outerContainer">
+        <div id="left-box">
+            <p style="font-size: 12px; padding: 10px 10px 10px 20px;">
+                Loughborough University
+                <br>
+                Leicestershire, UK
+                <br>
+                LE11 3TU
+                <br>
+                +44 (0)1509 222222
+            </p>
+        </div>
+        <div id="right-box">
+            <img src="Content/lboro-logo.gif">
+        </div>
+        <div id="locationBar">
+            <h2 style="padding: 10px 20px 0;">Loughborough Timetabling</h2>
+        </div>
+        @RenderBody()
+    </div>
+
+    <nav class="main-menu" id="side-menu">
+        <ul>
+            <li>
+                <a href="#">
+                    <img src="Content/home_w.png" style="margin-left:40%;">
+                    <i class="fa fa-home fa-2x"></i>
+                    <span class="nav-text">
+                        Home
+                    </span>
+                </a>
+
+            </li>
+            <li class="has-subnav" onclick="@("window.location.href='" + @Url.Action("Index", "facilities", new { user = Model.user.name }) + "'");">
+                <a href="#">
+                    <img src="Content/time.png" style="margin-left:40%;">
+                    <i class="fa fa-list fa-2x"></i>
+                    <span class="nav-text">
+                        Facilities
+                    </span>
+                </a>
+            </li>
+            <li class="has-subnav" onclick="@("window.location.href='" + @Url.Action("Index", "modules", new { user = Model.user.name }) + "'");">
+                <a href="#">
+                    <img src="Content/create.png" style="margin-left:40%;">
+                    <i class="fa fa-list fa-2x"></i>
+                    <span class="nav-text">
+                        Modules
+                    </span>
+                </a>
+
+            </li>
+            <li class="has-subnav" onclick="@("window.location.href='" + @Url.Action("Index", "requests", new { user = Model.user.name }) + "'");">
+                <a href="#">
+                    <img src="Content/pending.png" style="margin-left:40%;">
+                    <i class="fa fa-folder-open fa-2x"></i>
+                    <span class="nav-text">
+                        Requests
+                    </span>
+                </a>
+
+            </li>
+            <li class="has-subnav" onclick="@("window.location.href='" + @Url.Action("Index", "rooms", new { user = Model.user.name }) + "'");">
+                <a href="#">
+                    <img src="Content/academic.png" style="margin-left:40%;">
+                    <i class="fa fa-bar-chart-o fa-2x"></i>
+                    <span class="nav-text">
+                        Rooms
+                    </span>
+                </a>
+            </li>
+            <li class="has-subnav" onclick="@("window.location.href='" + @Url.Action("Index", "rounds", new { user = Model.user.name }) + "'");">
+                <a href="#">
+                    <img src="Content/archive.png" style="margin-left:40%;">
+                    <i class="fa fa-font fa-2x"></i>
+                    <span class="nav-text">
+                        Rounds
+                    </span>
+                </a>
+            </li>
+            <li class="has-subnav" onclick="@("window.location.href='" + @Url.Action("Index", "staffs", new { user = Model.user.name }) + "'");">
+                <a href="#">
+                    <img src="Content/archive.png" style="margin-left:40%;">
+                    <i class="fa fa-font fa-2x"></i>
+                    <span class="nav-text">
+                        Staff
+                    </span>
+                </a>
+            </li>
+        </ul>
+
+        <ul class="logout">
+            <li>
+                <a href="#">
+                    <i class="fa fa-power-off fa-2x"></i>
+                    <span class="nav-text">
+                        Logout
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+
+
+
+</body>
+</html>

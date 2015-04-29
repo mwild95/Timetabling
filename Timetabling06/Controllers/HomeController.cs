@@ -39,7 +39,13 @@ namespace Timetabling06.Controllers
                     var passwordCheck = departments.First();
                     if (passwordCheck.password == password)
                     {
-                        
+                        //Yousif
+                        if (departments.First().code == "admin")
+                        {
+                            return RedirectToAction("Index", "admin", new { user = departments.First().code });
+
+                        }
+                        else //
                         return RedirectToAction("Index", "Timetabler", new {user=departments.First().code });
                     }
                     else
