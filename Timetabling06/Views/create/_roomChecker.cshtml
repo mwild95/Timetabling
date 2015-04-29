@@ -10,46 +10,191 @@
 <script type="text/javascript">
     $(document).ready(function () {
         rooms = [];
-        @foreach (var room in Model.rooms) { 
-            <text>
-        rooms[rooms.length] = {roomNumber:'@room.roomNumber', buildingCode:'@room.buildingCode'};
-            </text>
+        @if(Model.rooms !=null){
+            foreach (var room in Model.rooms) {
+                <text>
+                rooms[rooms.length] = { roomNumber: '@room.roomNumber', buildingCode: '@room.buildingCode' };
+                </text>
+            }
         }
-    })
+        
+        $("#addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1").click(function () {
+
+            $("#addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1").hide("slow");
+            $("#removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2").show("slow");
+            $("#roomBuildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2").show("slow");
+
+        });
+
+        $("#addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2").click(function () {
+
+            $("#addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2").hide("slow");
+            $("#removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2").hide("slow");
+            $("#roomBuildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3").show("slow");
+
+        });
+        $("#removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3").click(function () {
+
+            $("#addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2").show("slow");
+            $("#removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2").show("slow");
+            $("#roomBuildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3").hide("slow");
+
+        });
+        $("#removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2").click(function () {
+
+            $("#addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1").show("slow");
+
+            $("#roomBuildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2").hide("slow");
+            $("#removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2").hide("slow");
+        });
+    });
+
+
 </script>
 
 <div class="well" style="width:100%;" id="roomBuildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)">
-    <div style="display:inline-block; ">
-        <h5>Building:</h5>
-        <select id="buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)" class="form-control" onchange="fillRooms(@Model.roomNo,@Model.RequestNo,$('#buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)').val())" style="width:auto;">
-            @if(Model.buildings==null){<text><option value="empty">No Suitable Buildings</option></text>}
-            else
-            {
-            <option value="Any">Any</option>
-                foreach (var building in Model.buildings)
-                {
-                    <text>
-                    <option value="@(building.code)">@(building.name)</option></text>
-                }
-            }
+    <table style="width:100%;">
+        <tr>
+            <td style="width:50%"><h5>Building:</h5></td>
+            <td style="width:20%"><h5>Room:</h5></td>
+            <td><h5>Add Room Preference:</h5></td>
+        </tr>
+    </table>  
+                <div id="roomBuildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1">
+                    <div style="display:inline-block;">
+
+                        <select id="buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1" class="form-control" onchange="fillRooms(@Model.roomNo,@Model.RequestNo,$('#buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1').val(),1)" style="width:auto;">
+                            @if (Model.buildings == null)
+                            {<text>
+                                <option value="empty">No Suitable Buildings</option></text>}
+                            else
+                            {
+                                <option value="Any">Any</option>
+                                foreach (var building in Model.buildings)
+                                {
+                                    <text>
+                                        <option value="@(building.code)">@(building.name)</option></text>
+                                }
+                            }
+
+
+                        </select>
+                    </div>
+                    <div style="display:inline-block;">
+
+                        <select id="roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1" class="form-control" style="width:auto;">
+                            @if (Model.rooms == null)
+                            {
+                                <text>
+                                    <option value="empty">No Suitable Rooms</option></text>
+                            }
+                            else
+                            {
+                                foreach (var room in Model.rooms)
+                                {
+                                    <text>
+                                        <option value="@(room.buildingCode)@(room.roomNumber)">@(room.buildingCode)@(room.roomNumber)</option></text>
+                                }
+                            }
+
+                        </select>
+                    </div>
+                    <div style="display:inline-block;">
+
+                        <button type="button" class="btn btn-primary" stlye="float:right" id="addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1"><span class="glyphicon glyphicon-plus"></span></button>
+
+                    </div>
+                </div>
+                <div id="roomBuildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2" hidden>
+                    <div style="display:inline-block; ">
+
+                        <select id="buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2" class="form-control" style="width:50%;" onchange="fillRooms(@Model.roomNo,@Model.RequestNo,$('#buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2').val(),2)" style="width:auto;">
+                            @if (Model.buildings == null)
+                            {<text>
+                                <option value="empty">No Suitable Buildings</option></text>}
+                            else
+                            {
+                                <option value="Any">Any</option>
+                                foreach (var building in Model.buildings)
+                                {
+                                    <text>
+                                        <option value="@(building.code)">@(building.name)</option></text>
+                                }
+                            }
+
+
+                        </select>
+                    </div>
+                    <div style="display:inline-block;">
+
+                        <select id="roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2" class="form-control" style="width:auto;">
+                            @if (Model.rooms == null)
+                            {
+                                <text>
+                                    <option value="empty">No Suitable Rooms</option></text>
+                            }
+                            else
+                            {
+                                foreach (var room in Model.rooms)
+                                {
+                                    <text>
+                                        <option value="@(room.buildingCode)@(room.roomNumber)">@(room.buildingCode)@(room.roomNumber)</option></text>
+                                }
+                            }
+
+                        </select>
+                    </div>
+                    <div style="display:inline-block; float:right">
+
+                        <button type="button" class="btn btn-primary" stlye="float:right" id="addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2"><span class="glyphicon glyphicon-plus"></span></button>
+                        <button type="button" class="btn btn-danger" stlye="float:right" id="removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2"><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
+                </div>
+                <div id="roomBuildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3" hidden>
+                    <div style="display:inline-block; ">
+
+                        <select id="buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3" class="form-control" onchange="fillRooms(@Model.roomNo,@Model.RequestNo,$('#buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3').val(),3)" style="width:auto;">
+                            @if (Model.buildings == null)
+                            {<text>
+                                <option value="empty">No Suitable Buildings</option></text>}
+                            else
+                            {
+                                <option value="Any">Any</option>
+                                foreach (var building in Model.buildings)
+                                {
+                                    <text>
+                                        <option value="@(building.code)">@(building.name)</option></text>
+                                }
+                            }
+
+
+                        </select>
+                    </div>
+                    <div style="display:inline-block;">
+
+                        <select id="roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3" class="form-control" style="width:auto;">
+                            @if (Model.rooms == null)
+                            {
+                                <text>
+                                    <option value="empty">No Suitable Rooms</option></text>
+                            }
+                            else
+                            {
+                                foreach (var room in Model.rooms)
+                                {
+                                    <text>
+                                        <option value="@(room.buildingCode)@(room.roomNumber)">@(room.buildingCode)@(room.roomNumber)</option></text>
+                                }
+                            }
+
+                        </select>
+                    </div>
+                    <div style="display:inline-block; float:right">
+                        <button type="button" class="btn btn-danger" stlye="float:right" id="removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3"><span class="glyphicon glyphicon-remove"></span></button>
+                    </div>
+                </div>
             
-            
-        </select>
-        </div>
-    <div style="display:inline-block;">
-        <h5>Room:</h5>
-        <select id="roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)" class="form-control" style="width:auto;">
-            @if(Model.rooms == null){
-                <text><option value="empty">No Suitable Rooms</option></text>
-            }else{
-                foreach (var room in Model.rooms)
-                {
-                    <text>
-                    <option value="@(room.buildingCode)@(room.roomNumber)">@(room.buildingCode)@(room.roomNumber)</option></text>
-                }
-            }
-            
-        </select>
-        </div>
-    </div>
+    
+</div>
        
+@foreach(var booking in Model.bookedRooms){<h2>@booking.buildingCode@booking.roomNumber</h2>}

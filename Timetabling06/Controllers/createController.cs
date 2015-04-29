@@ -66,6 +66,8 @@ namespace Timetabling06.Controllers
             reqData.type = JSONdata.requests.type;
             reqData.otherReqs = JSONdata.requests.otherReqs;
             reqData.roundID = JSONdata.requests.roundID;
+            reqData.room_request = JSONdata.requests.room_request;
+            
             ViewBag.module = reqData.weeks;
             if(JSONdata.requests.otherReqs==null){
                 reqData.otherReqs = "None";
@@ -74,8 +76,18 @@ namespace Timetabling06.Controllers
             reqData.status = 0;
             reqData.viewed = 0;
             reqData.booked = 0;
-            db.requests.Add(reqData);
+            if(!(JSONdata.facilities==null)){
+                for (var q = 0; q < JSONdata.facilities.Count(); q++)
+                {
+                    facility newFac = new facility();
+                    var tmp = JSONdata.facilities[q];
+                    newFac = db.facilities.Where(r => r.facilityName.Equals(tmp)).First();
+                    reqData.facilities.Add(newFac);
+                }
+            }
             
+            db.requests.Add(reqData);
+         
             try
             {
                 // Your code...
@@ -107,47 +119,64 @@ namespace Timetabling06.Controllers
                 }
             }
 
-            for (var q = 0; q < JSONdata.facilities.Length;q++ )
-            {
-                
-            }
+            
             return View();
         }
 
 
-        public ActionResult _roomChecker(int roomNum, int requestNum, String user, int roundID, int day, int time, int length,int[] weeks,int students,String roomType,String park, String[] facilities){
+        public ActionResult _roomChecker(checkRooms JSONdata){
             var rooms = db.rooms.Include(r=>r.building).Include(r=>r.facilities);
-            rooms = rooms.Where(r => r.capacity >= students);
-            if(roomType != "Any"){
-                rooms = rooms.Where(r=>r.roomType.Equals(roomType));
-            }
-            if (park != "Any") { 
-                rooms = rooms.Where(r=>r.building.park.Equals(park));
-            }
-            
-            if (facilities != null)
+            rooms = rooms.Where(r => r.capacity >= JSONdata.capacity);
+            if (JSONdata.type != "Any")
             {
-                for (var i = 0; i < facilities.Length; i++)
+                rooms = rooms.Where(r => r.roomType==JSONdata.type);
+            }
+            if (JSONdata.park != "Any")
+            {
+                rooms = rooms.Where(r => r.building.park==JSONdata.park);
+            }
+
+            if (JSONdata.facilities != null)
+            {
+                for (var i = 0; i < JSONdata.facilities.Length; i++)
                 {
-                    rooms = rooms.Where(r => r.facilities.Any(f => f.facilityName.Equals(facilities[i])));
+                    rooms = rooms.Where(r => r.facilities.Any(f => f.facilityName==JSONdata.facilities[i]));
 
                 }
             }
-            
 
+            var proposedRequest = db.requests.Include(r => r.rooms);
+            proposedRequest = proposedRequest.Where(r=>r.booked==1);
+            proposedRequest = proposedRequest.Where(r => r.roundID.Equals(JSONdata.roundID));
+            proposedRequest = proposedRequest.Where(r => r.day==JSONdata.day);
+            proposedRequest = proposedRequest.Where(s => s.start < JSONdata.start + JSONdata.length && s.start + s.length > JSONdata.start);
+            int[] standardWeeks = new int[12] {1,2,3,4,5,6,7,8,9,10,11,12};
+            var containsStandard = standardWeeks.Intersect(JSONdata.weeks);
+            if (containsStandard.Count()!=0)
+            {
+                proposedRequest = proposedRequest.Where(r => r.weeks_request.Any(f => JSONdata.weeks.Contains(f.week)) || r.weeks==1.ToString());
+            }
+            else {
+                proposedRequest = proposedRequest.Where(r => r.weeks_request.Any(f => JSONdata.weeks.Contains(f.week)));
+            }
 
-            var deptRooms = db.rooms.Include(r => r.building).Include(r => r.facilities).Where(r=>r.belongsTo.Equals(user));
+            var bookedRooms = proposedRequest.SelectMany(r => r.rooms);
+            var bookedRoomsList = bookedRooms.ToList();
+
+            var deptRooms = db.rooms.Include(r => r.building).Include(r => r.facilities).Where(r => r.belongsTo==JSONdata.deptCode);
 
             roomCheckerObject suitableRooms = new roomCheckerObject();
-            suitableRooms.code = user;
-            suitableRooms.roomNo = roomNum;
-            suitableRooms.RequestNo = requestNum;
-            if(rooms.Count() >0){
+            suitableRooms.code = JSONdata.deptCode;
+            suitableRooms.roomNo = JSONdata.roomNo;
+            suitableRooms.RequestNo = JSONdata.RequestNo;
+            if(rooms.ToList().Count() >0){
                 suitableRooms.rooms = rooms.ToList();
                 var buildings = rooms.Select(r => r.building).Distinct();
                 suitableRooms.buildings = buildings.ToList();
             }
-            
+            if(bookedRooms.Count() >0){
+                suitableRooms.bookedRooms = bookedRoomsList;
+            }
 
             if(deptRooms.Count() >0){
                 suitableRooms.deptRooms = deptRooms.ToList();

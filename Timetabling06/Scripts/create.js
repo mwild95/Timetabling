@@ -372,7 +372,7 @@ function updateRooms(roomNo, RequestNo) {
     var weeksVar = [];
     var weeksArray = $("#weeksTbleRoom"+roomNo+"Request"+RequestNo+" :checked");
     for (var i = 0; i <weeksArray.length ; i++) {
-        weeksVar[weeksVar.length] = weeksArray[i].value.toString();
+        weeksVar[weeksVar.length] = parseInt(weeksArray[i].value);
     }
     var studentsVar = $("#capacitySpinnerRoom" + roomNo + "Request" + RequestNo).val();
     var roomTypeVar = $("#roomTypeDivRoom" + roomNo + "Request" + RequestNo + " :checked").attr("value");
@@ -383,26 +383,44 @@ function updateRooms(roomNo, RequestNo) {
         facilitiesValue[facilitiesValue.length] = facilitiesObject[q].value;
     }
     
-    
+    /*type: 'POST',
+        url: '/create/Submit',
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert("Submitting Failed. Please Reload and Try Again.");
+        },
+        data: JSON.stringify({ requests: requestData, weeks: weeksVar, facilities: facilitiesValue }),
+        datatype: 'html',
+        contentType: 'application/json',
+        processData: false,
+        async:false,
+        success: function (data) {
+            alert(data);
+        }*/
 
     $.ajax({
-        type: 'GET',
+        type: 'POST',
         url: '/create/_roomChecker',
-        data: {
-            roomNum: roomNo,
-            requestNum: RequestNo,
-            user: userVar,
-            roundID: roundIDVar,
-            day: dayVar,
-            time: timeVar,
-            length: lengthVar,
-            weeks: weeksVar,
-            students: studentsVar,
-            roomType: roomTypeVar,
-            park: parkVar,
-            facilities : facilitiesValue
+        error: function(xhr, ajaxOptions, thrownError){
+            alert("Oops. Something went wrong. Please refresh and try again.");
         },
+        data: JSON.stringify({
+            "roomNo": roomNo,
+            "RequestNo": RequestNo,
+            "deptCode": userVar,
+            "roundID": roundIDVar,
+            "day": dayVar,
+            "start": timeVar,
+            "length": lengthVar,
+            "weeks": weeksVar,
+            "capacity": studentsVar,
+            "type": roomTypeVar,
+            "park": parkVar,
+            "facilities" : facilitiesValue
+        }),
         datatype: 'html',
+        contentType: 'application/json',
+        processData: false,
+        async:false,
         success: function (data) {
             
             $("#roomBuildingSlctRoom"+roomNo+"Request"+RequestNo).replaceWith(data);
@@ -416,8 +434,8 @@ function timeChange(roomNo, RequestNo) {
     updateRooms(roomNo, RequestNo);
 }
 
-function fillRooms(roomNo, RequestNo, buildingCode) {
-    var roomSelect = document.getElementById("roomSlctRoom" + roomNo + "Request" + RequestNo);
+function fillRooms(roomNo, RequestNo, buildingCode, roomPref) {
+    var roomSelect = document.getElementById("roomSlctRoom" + roomNo + "Request" + RequestNo + "Pref" + roomPref);
     for (var i = roomSelect.options.length - 1; i >= 0 ; i--) {
         roomSelect.remove(i);
     }
@@ -463,7 +481,7 @@ function sendRequest() {
     if (weeksTest.join() === weeksVar.join()) {
         weeksNum = 1;
     }
-    var studentsVar = $("#capacitySpinnerRoom" + roomNo + "Request" + RequestNo).val();
+    
     var roomTypeVar = $("#roomTypeDivRoom" + roomNo + "Request" + RequestNo + " :checked").attr("value");
     var parkVar = $("#parkDivRoom" + roomNo + "Request" + RequestNo + " :checked").attr("value");
     var facilitiesObject = $("#facilitiesTableRoom" + roomNo + "Request" + RequestNo + " :checked");
@@ -472,6 +490,84 @@ function sendRequest() {
         facilitiesValue[facilitiesValue.length] = facilitiesObject[q].value;
     }
     var otherReqs = $("#specialReqsRoom"+roomNo + "Request"+RequestNo).val();
+    var roomPrefs = [];
+    /////////finding rooms and prefernces///////////
+    var room_request = [];
+    var firstRoomBuildingCode = $("#buildingSlctRoom" + roomNo + "Request" + RequestNo + "Pref1").val();
+    var firstRoomRoomNumber = $("#roomSlctRoom" + roomNo + "Request" + RequestNo + "Pref1").val();
+    if (firstRoomBuildingCode == "Any") {
+        for (var t = 0; t < rooms.length; t++) {
+            if(rooms[t].buildingCode+rooms[t].roomNumber==firstRoomRoomNumber){
+                firstRoomBuildingCode = rooms[t].buildingCode;
+                firstRoomRoomNumber = rooms[t].roomNumber;
+            }
+        }
+    } else {
+            
+            firstRoomRoomNumber = firstRoomRoomNumber.substring(0, firstRoomBuildingCode.length);
+    }
+    
+    
+    var studentsVar = $("#capacitySpinnerRoom" + roomNo + "Request" + RequestNo).val();
+    
+    var firstRoom = {
+        "buildingCode": firstRoomBuildingCode,
+        "roomNumber": firstRoomRoomNumber,
+        "class_size": parseInt(studentsVar),
+        "priority":1
+    };
+    room_request[room_request.length] = firstRoom;
+    if ($("#roomBuildingSlctRoom" + roomNo + "Request" + RequestNo + "Pref2").is(":visible")) {
+        var secondRoomBuildingCode = $("#buildingSlctRoom" + roomNo + "Request" + RequestNo + "Pref2").val();
+        var secondRoomRoomNumber = $("#roomSlctRoom" + roomNo + "Request" + RequestNo + "Pref2").val();
+        
+ 
+        if (secondRoomBuildingCode == "Any") {
+            for (var t = 0; t < rooms.length; t++) {
+                if (rooms[t].buildingCode + rooms[t].roomNumber == secondRoomRoomNumber) {
+                    secondRoomBuildingCode = rooms[t].buildingCode;
+                    secondRoomRoomNumber = rooms[t].roomNumber;
+                }
+            }
+        } else {
+            secondRoomRoomNumber = secondRoomRoomNumber.substring(0, secondRoomBuildingCode.length);
+            
+        }
+        var secondRoom = {
+            "buildingCode": secondRoomBuildingCode,
+            "roomNumber": secondRoomRoomNumber,
+            "class_size": parseInt(studentsVar),
+            "priority": 2
+        };
+        room_request[room_request.length] = secondRoom;
+    }
+
+    if ($("#roomBuildingSlctRoom" + roomNo + "Request" + RequestNo + "Pref3").is(":visible")) {
+        var thirdRoomBuildingCode = $("#buildingSlctRoom" + roomNo + "Request" + RequestNo + "Pref3").val();
+        var thirdRoomRoomNumber = $("#roomSlctRoom" + roomNo + "Request" + RequestNo + "Pref3").val();
+        
+
+        if (thirdRoomBuildingCode == "Any") {
+            for (var t = 0; t < rooms.length; t++) {
+                if (rooms[t].buildingCode + rooms[t].roomNumber == thirdRoomRoomNumber) {
+                    thirdRoomBuildingCode = rooms[t].buildingCode;
+                    thirdRoomRoomNumber = rooms[t].roomNumber;
+                }
+            }
+        } else {
+            thirdRoomRoomNumber = thirdRoomRoomNumber.substring(0, thirdRoomBuildingCode.length);
+        }
+        var thirdRoom = {
+            "buildingCode": thirdRoomBuildingCode,
+            "roomNumber": thirdRoomRoomNumber,
+            "class_size": parseInt(studentsVar),
+            "priority": 3
+        };
+        room_request[room_request.length] = thirdRoom;
+    }
+
+
+
 
     var requestData = {
         "deptCode": userVar,
@@ -482,9 +578,10 @@ function sendRequest() {
         "start": parseInt(timeVar)-8,
         "length": parseInt(lengthVar),
         "weeks": weeksNum,
-        "capacity": parseInt(studentsVar),
         "type": roomTypeVar,
-        "otherReqs": otherReqs
+        "otherReqs": otherReqs,
+        "room_request":room_request
+        
     };
     var obj = JSON.stringify(requestData);
 
@@ -494,7 +591,7 @@ function sendRequest() {
         error: function (xhr, ajaxOptions, thrownError) {
             alert("Submitting Failed. Please Reload and Try Again.");
         },
-        data: JSON.stringify({ requests: requestData, weeks: weeksVar, facilities: facilitiesValue }),
+        data: JSON.stringify({ "requests": requestData, "weeks": weeksVar, "facilities": facilitiesValue }),
         datatype: 'html',
         contentType: 'application/json',
         processData: false,

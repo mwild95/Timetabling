@@ -183,10 +183,12 @@
     <Compile Include="Models\weeks_request.cs">
       <DependentUpon>DatabaseModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ModelViews\checkRooms.cs" />
     <Compile Include="ModelViews\createObjects.cs" />
     <Compile Include="ModelViews\HomeModel.cs" />
     <Compile Include="ModelViews\ModuleDepartment.cs" />
     <Compile Include="ModelViews\RequestDepartment.cs" />
+    <Compile Include="ModelViews\request_facility.cs" />
     <Compile Include="ModelViews\roomCheckerObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

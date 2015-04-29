@@ -14,5 +14,6 @@ namespace Timetabling06.ModelViews
         public ICollection<building> buildings { get; set; }
         public int roomNo { get; set; }
         public int RequestNo { get; set; }
+        public List<room> bookedRooms { get; set; }
     }
 }
