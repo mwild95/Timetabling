@@ -5,12 +5,28 @@
 }
 
 <h2>Index</h2>
+<!--Select boxes to filter-->
+<div id="filter">
+    <label for="buildings">Building:</label> @Html.DropDownList("buildings", "Select a building")
+    <!--<label for="rooms">Room: </label> @Html.DropDownList("rooms", new SelectList(string.Empty, "Value", "Text"), "First select a building")-->
 
+    <!--Textbox to search-->
+    <label for="searchBox">Search: </label><input id="searchBox" type="text" placeholder="type to search" />
+</div>
+<label for="searchResult">Searching for </label><input id="searchResult" type="text" />
 <p>
     @Html.ActionLink("Create New", "Create", new {user = ViewBag.user })
 </p>
 <table class="table">
     <tr>
+        <!--Yousif-->
+        <th>
+            @Html.DisplayNameFor(model => model.buildingCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.roomNumber)
+        </th>
+        <!---->
         <th>
             @Html.DisplayNameFor(model => model.roomType)
         </th>
@@ -31,6 +47,14 @@
 
 @foreach (var item in Model) {
     <tr>
+        <!--Yousif-->
+        <td>
+            @Html.DisplayFor(modelItem => item.buildingCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.roomNumber)
+        </td>
+        <!---->
         <td>
             @Html.DisplayFor(modelItem => item.roomType)
         </td>
@@ -55,3 +79,85 @@
 }
 
 </table>
+
+<script type="text/javascript">
+    
+    $("#buildings").change(function () {
+        var selectedBuilding = $(this).val();
+        var selectedIndex = document.getElementById('buildings').selectedIndex;
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetRoomsByBuilding")',
+            dataType: 'json',
+            data: { "selectedBuilding": selectedBuilding },
+
+            success: function (rooms) {
+                //Delete data in room field:
+                $('#rooms').empty();
+
+                if (selectedIndex == 0)  //If a building not selected
+                    $('#rooms').append('<option value="">First select a building</option>');
+                else
+                    $('#rooms').append('<option value="">Select a room</option>');
+
+
+                $.each(rooms, function (i, room) { //Populates rooms select with rooms
+                    $('#rooms').append('<option value="' + room.Value + '">' +
+                        room.Text + '</option>');
+                });
+            },
+           /* error: function (ex) {
+                alert('failed to load rooms');
+            }*/
+        });
+    });
+    
+
+    /* Function to filter table */
+    $('#filter').on('change keyup', function () {
+
+        //Reset room to first option if selected building changed
+        $('#buildings').change(function () {
+            $('#rooms option:eq(0)').prop('selected', true);
+        });
+
+        gatherSearchFilters();
+        searchRows(searchString);
+
+    });
+
+    /* Populate hidden search result field with search filters */
+    function gatherSearchFilters() {
+        searchString = '';
+        $('#filter').children('input, select').each(function () {
+            searchString += $(this).val() + ' ';
+        });
+       searchString =  $.trim(searchString);
+        $('#searchResult').val(searchString);
+        return (searchString);
+    }
+
+    /* Search rows based on filter, deletes unmatched rows, shows matched ones  */
+    function searchRows(searchString) {
+        var searchArray = searchString.split(' ');
+            $('tr:not(:has(th))').each(function () { //Loop through each table data
+                var tableContent = $(this).text();
+                var continueLoop = true;
+                var i = 0;
+                while (continueLoop == true && i <= searchArray.length) {
+                    if (tableContent.search(new RegExp(searchArray[i], "i")) < 0) { //If word not found
+                        continueLoop = false;
+                    }
+                    else i++;
+                }
+                if (continueLoop == false)
+                    $(this).fadeOut();
+
+                else
+                    $(this).fadeIn();
+            });
+    }
+
+
+
+</script>

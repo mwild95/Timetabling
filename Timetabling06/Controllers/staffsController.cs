@@ -10,127 +10,115 @@ using Timetabling06.Models;
 
 namespace Timetabling06.Controllers
 {
-    public class modulesController : Controller
+    public class staffsController : Controller
     {
         private team06Entities db = new team06Entities();
 
-        // GET: modules
+        // GET: staffs
         public ActionResult Index()
         {
-
-            GetDepartments(); //Gets departments for dropdownlist
-            var modules = db.modules.Include(m => m.department);
-            return View(modules.ToList());
+            var staffs = db.staffs.Include(s => s.department);
+            return View(staffs.ToList());
         }
 
-        // GET: modules/Details/5
-        public ActionResult Details(string deptCode, string moduleCode)
+        // GET: staffs/Details/5
+        public ActionResult Details(int? id)
         {
-            if (deptCode == null || moduleCode == null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            module module = db.modules.Find(moduleCode,deptCode);
-            if (module == null)
+            staff staff = db.staffs.Find(id);
+            if (staff == null)
             {
                 return HttpNotFound();
             }
-            return View(module);
+            return View(staff);
         }
 
-        // GET: modules/Create
+        // GET: staffs/Create
         public ActionResult Create()
         {
             ViewBag.deptCode = new SelectList(db.departments, "code", "name");
             return View();
         }
 
-        // POST: modules/Create
+        // POST: staffs/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "moduleCode,deptCode,moduleTitle")] module module)
+        public ActionResult Create([Bind(Include = "staffID,firstName,lastName,deptCode")] staff staff)
         {
             if (ModelState.IsValid)
             {
-                db.modules.Add(module);
+                db.staffs.Add(staff);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.deptCode = new SelectList(db.departments, "code", "name", module.deptCode);
-            return View(module);
+            ViewBag.deptCode = new SelectList(db.departments, "code", "name", staff.deptCode);
+            return View(staff);
         }
 
-        // GET: modules/Edit/5
-        public ActionResult Edit(string deptCode, string moduleCode)
+        // GET: staffs/Edit/5
+        public ActionResult Edit(int? id)
         {
-            if (deptCode == null || moduleCode == null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            module module = db.modules.Find(moduleCode, deptCode);
-            if (module == null)
+            staff staff = db.staffs.Find(id);
+            if (staff == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.deptCode = new SelectList(db.departments, "code", "name", module.deptCode);
-            return View(module);
+            ViewBag.deptCode = new SelectList(db.departments, "code", "name", staff.deptCode);
+            return View(staff);
         }
 
-        // POST: modules/Edit/5
+        // POST: staffs/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "moduleCode,deptCode,moduleTitle")] module module)
+        public ActionResult Edit([Bind(Include = "staffID,firstName,lastName,deptCode")] staff staff)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(module).State = EntityState.Modified;
+                db.Entry(staff).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.deptCode = new SelectList(db.departments, "code", "name", module.deptCode);
-            return View(module);
+            ViewBag.deptCode = new SelectList(db.departments, "code", "name", staff.deptCode);
+            return View(staff);
         }
 
-        // GET: modules/Delete/5
-        public ActionResult Delete(string deptCode, string moduleCode)
+        // GET: staffs/Delete/5
+        public ActionResult Delete(int? id)
         {
-            if (deptCode == null || moduleCode == null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            module module = db.modules.Find(moduleCode, deptCode);
-            if (module == null)
+            staff staff = db.staffs.Find(id);
+            if (staff == null)
             {
                 return HttpNotFound();
             }
-            return View(module);
+            return View(staff);
         }
 
-        // POST: modules/Delete/5
+        // POST: staffs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(int id)
         {
-            module module = db.modules.Find(id);
-            db.modules.Remove(module);
+            staff staff = db.staffs.Find(id);
+            db.staffs.Remove(staff);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-        //Yousif
-
-        public ActionResult GetDepartments()
-        {
-            ViewBag.departments = new SelectList(db.departments, "name", "name");
-            return View();
-        }
-
-        //
 
         protected override void Dispose(bool disposing)
         {
