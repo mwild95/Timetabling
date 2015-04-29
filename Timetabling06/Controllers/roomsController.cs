@@ -22,7 +22,6 @@ namespace Timetabling06.Controllers
             }else{
                 var rooms = db.rooms.Include(r => r.building).Include(r => r.department);
                 ViewBag.user = user;
-                GetBuildings(); //Gets buildings from database to display on load
                 return View(rooms.ToList());
             }
             
@@ -183,28 +182,6 @@ namespace Timetabling06.Controllers
                 return RedirectToAction("Index", new { user = user });
             }
         }
-
-        //Yousif
-
-        //Stores buildings from db to display in select box
-        public ActionResult GetBuildings()
-        {
-            ViewBag.buildings = new SelectList(db.buildings, "name", "name");
-            return View();
-        }
-        /*
-        public JsonResult GetRoomsByBuilding(string selectedBuilding)
-        {
-            SelectList rooms = new SelectList(db.rooms.Where(g => g.buildingName == selectedBuilding), "roomNumber", "roomNumber");
-            //  var data = from c in db.rooms
-            //             select c;
-            // SelectList rooms = new SelectList(data);
-            return Json(rooms);
-        }
-        */
-
-
-        //
 
         protected override void Dispose(bool disposing)
         {

@@ -17,8 +17,6 @@ namespace Timetabling06.Controllers
         // GET: modules
         public ActionResult Index()
         {
-
-            GetDepartments(); //Gets departments for dropdownlist
             var modules = db.modules.Include(m => m.department);
             return View(modules.ToList());
         }
@@ -121,16 +119,6 @@ namespace Timetabling06.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
-        //Yousif
-
-        public ActionResult GetDepartments()
-        {
-            ViewBag.departments = new SelectList(db.departments, "name", "name");
-            return View();
-        }
-
-        //
 
         protected override void Dispose(bool disposing)
         {
