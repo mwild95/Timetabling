@@ -5,13 +5,6 @@
 }
 
 <h2>Index</h2>
-<div id="filter">
-    <label for="departments">Department:</label> @Html.DropDownList("departments", "Select a department")
-    <!--Textbox to search-->
-    <label for="searchBox">Search: </label><input id="searchBox" type="text" placeholder="type to search" />
-</div>
-<label for="searchResult">Searching for </label><input id="searchResult" type="text" />
-
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -45,57 +38,3 @@
 }
 
 </table>
-
-<script type="text/javascript">
-
-    /* Remove admin option from dropdown list since it has no associated modules */
-    $(document).ready(function () {
-        $('#departments option[value="admin"]').remove();
-    });
-
-
-
-    /* Initiates search  */
-    $('#filter').on('change', function () { //only 'change', not 'keyup' to solve performance issues with long table list
-        gatherSearchFilters();
-        searchRows(department, string);
-    });
-
-    /* Gets search filters and populates search result field with search filters */
-    function gatherSearchFilters() {
-        department = $('#departments').val();
-        string = $.trim($('#searchBox').val());
-        $('#searchResult').val(department + " " + string);
-        return (department, string);
-    }
-
-    /* Search rows based on filter, deletes unmatched rows, shows matched ones  */
-    function searchRows(department, string) {
-        $('tr:not(:has(th))').each(function () { //Loop through each table data
-            var tableContent = $(this).text();
-            var tableDepartment = $(this).children('td:nth-child(3)').text(); //Only looks for selected department in the department column
-            var continueLoop = true;
-
-            if (string.length > 0) {
-                if (tableContent.search(new RegExp(string, "i")) < 0) { //If word not found
-                    continueLoop = false;
-                }
-            }
-            if (department.length > 0) {
-                if (tableDepartment.search(new RegExp(department, "i")) < 0) { //If word not found
-                    continueLoop = false;
-                }
-            }
-
-            if (continueLoop == false) {
-                $(this).fadeOut();
-            }
-            else {
-                $(this).fadeIn();
-            }
-        });
-    }
-
-
-</script>
-
