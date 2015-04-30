@@ -11,6 +11,7 @@ namespace Timetabling06.Controllers
     {
         private team06Entities db = new team06Entities();
         // GET: Timetabler
+       
         public ActionResult Index(String user)
         {
             if(user==null){
@@ -21,19 +22,26 @@ namespace Timetabling06.Controllers
                 data.unseenRequests = db.requests.Where(r=>r.deptCode==user).Count();
                 
                 
+                      ViewData["message"] = "timetable page";
+
+            ViewBag.roomNumber = new SelectList(db.rooms, "roomNumber", "buildingCode");
+
+            ViewBag.park = new SelectList(db.buildings, "code", "park");
+
+            ViewBag.building = new SelectList(db.buildings, "code", "name");
+                
                 return View(data);
             }
         }
-              /*public ActionResult Index()
+             public ActionResult HandleForm(string park, string building, string roomNumber, string weeks)
         {
-            ViewBag.roomNumber = new SelectList(db.rooms, "roomNumber", "buildingCode").Distinct();
+            ViewData["park"] = park;
+            ViewData["building"] = building;
+            ViewData["roomNumber"] = roomNumber;
+            ViewData["weeks"] = weeks;
 
-            ViewBag.park = new SelectList(db.buildings, "code", "park" ).Distinct();
-
-            ViewBag.building = new SelectList(db.buildings, "code", "name").Distinct();
-
-            return View();
-        }*/
+       return View("FormResults");
+        }
 
         protected override void Dispose(bool disposing)
         {
