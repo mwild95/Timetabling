@@ -11,32 +11,29 @@
 
 <div>
        
-        @Html.BeginForm("selectTimetable", "TimetablerControlller.cs")
-        {
+         @using (Html.BeginForm("HandleForm", "timetabler"))
     
-        Select Park
-        @Html.DropDownList("park", (IEnumerable<SelectListItem>)ViewBag.park, new { @class = "dropdown" }));
+   {
+    Html.Encode(ViewData["message"]);
 
-        Select Building
-        @Html.DropDownList("building", String.Empty);
 
-        Select Room
-        @Html.DropDownList("roomNumber", String.Empty);
+    //Select Park
+     @Html.DropDownList("park", String.Empty); 
 
-        Select Week
-        @Html.DropDownList("Weeks", new SelectList(new[] { "Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6", "Week 7", "Week 8", "Week 9", "Week 10", "Week 11", "Week 12" }))
+   // Select Building
+    @Html.DropDownList("building", String.Empty); 
 
-        <button type="submit">next</button>
-        }
-   
-    <h1>Test Form</h1>
-    <form action="~/Views/Timetabler/show.cshtml" method="post">
+   // Select Room
+     @Html.DropDownList("roomNumber", String.Empty); 
 
-        Select Park
-        @Html.DropDownList("park", (IEnumerable<SelectListItem>)ViewBag.park, new { @class = "dropdown" }));
+       // Select Week
+   @Html.DropDownList("Weeks", new SelectList(new[] { "Week 1", "Week 2", "Week 3", "Week 4", "Week 5", "Week 6", "Week 7", "Week 8", "Week 9", "Week 10", "Week 11", "Week 12" })); 
 
-        <input type="submit" value="save" />
-    </form>
+    <input type="submit" value="Submit" />
+     }
+        
+    <a href="~/Views/Timetabler/show.cshtml">show page</a>
+    
         <table border="1">
             <tr>
                 <td></td>
@@ -114,4 +111,3 @@
  
  </div>
 
-</div>
