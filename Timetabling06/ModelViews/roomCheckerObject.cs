@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,6 +14,6 @@ namespace Timetabling06.ModelViews
         public ICollection<building> buildings { get; set; }
         public int roomNo { get; set; }
         public int RequestNo { get; set; }
-        public List<room> bookedRooms { get; set; }
+        public ICollection<room> bookedRooms { get; set; }
     }
 }
