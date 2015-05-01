@@ -1,4 +1,4 @@
-﻿@model Timetabling06.ModelViews.ModuleDepartment
+@model Timetabling06.ModelViews.ModuleDepartment
 
     <head>
     
@@ -95,9 +95,9 @@
 @{
     ViewBag.Title = "Create New Request";
 }
+<div id="load_screen" hidden><div id="loading"><div class="container"><center><h1 style="white-space:nowrap;">Submitting Requests</h1><div class="loader">Loading...</div></center></div></div></div>
 
-
-<div class="container" style="height:72vh">
+<div class="container" style="height:72vh" id="containsEverything">
     <div class="container" style="width:40%; display:inline-block; float:left; max-height:100%; height:100%">
         <div class="container" style="max-height:100%; height:100%">
             <div class="row" style="max-height:100%; height:100%">
@@ -109,7 +109,7 @@
 
 
 
-                        <select class="form-control input-sm" style="font-size:0.9em;" id="roundSelectRequest1">
+                        <select class="form-control input-sm" style="font-size:0.9em;" id="roundSelectRequest1" onchange="roundChange(1);">
 
                             @foreach (var item in Model.rounds)
                             {
@@ -214,35 +214,35 @@
                 <div class="well" style="width:100%;" hidden><h4>Use Timetable Auto-Fill - Insert Timetable Image Here</h4></div>
                 <div class="well" style="width:100%;">
                     <h5 style="display:inline-block">Time Slot: </h5>
-                    <button type="button" class="btn btn-info btn-xs" style="display:inline-block; float:right;" id="timeHelpBtn">?</button>
+                    <button type="button" class="btn btn-info btn-xs" style="display:inline-block; float:right;" id="timeHelpBtnRoom1Request1">?</button>
                     <div>
                         <table style="width:100%">
                             <tr>
                                 <td style="width:33%;">
                                     <select class="form-control input-sm" style="font-size:0.9em; display:inline-block;" id="daySlctRoom1Request1" onchange='updateRooms(1,1);'>
-                                        <option value="1">Monday </option>
-                                        <option value="2">Tuesday</option>
-                                        <option value="3">Wednesday</option>
-                                        <option value="4">Thursday</option>
-                                        <option value="5">Friday</option>
+                                        <option value="1">1 - Monday </option>
+                                        <option value="2">2 - Tuesday</option>
+                                        <option value="3">3 - Wednesday</option>
+                                        <option value="4">4 - Thursday</option>
+                                        <option value="5">5 - Friday</option>
                                     </select>
                                 </td>
                                 <td style="width:25%;">
                                     <select class="form-control input-sm" style="font-size:0.9em; display:inline-block;" id="timeSlctRoom1Request1" onchange="timeChange(1,1);">
-                                        <option value="9">09:00</option>
-                                        <option value="10">10:00</option>
-                                        <option value="11">11:00</option>
-                                        <option value="12">12:00</option>
-                                        <option value="13">13:00</option>
-                                        <option value="14">14:00</option>
-                                        <option value="15">15:00</option>
-                                        <option value="16">16:00</option>
-                                        <option value="17">17:00</option>
+                                        <option value="9">1 - 09:00</option>
+                                        <option value="10">2 - 10:00</option>
+                                        <option value="11">3 - 11:00</option>
+                                        <option value="12">4 - 12:00</option>
+                                        <option value="13">5 - 13:00</option>
+                                        <option value="14">6 - 14:00</option>
+                                        <option value="15">7 - 15:00</option>
+                                        <option value="16">8 - 16:00</option>
+                                        <option value="17">9 - 17:00</option>
                                     </select>
                                 </td>
                                 <td style="width:33%;">
                                     <div style="display:inline-block; font-size:0.9em;">
-                                        <div class="input-group number-spinner">
+                                        <div class="input-group number-spinner" id="timeSpinnerDivRoom1Request1">
                                             <span class="input-group-btn data-dwn">
                                                 <button class="btn btn-default btn-primary test" data-dir="dwn" id="lengthDownRoom1Request1"><span class="glyphicon glyphicon-minus"></span></button>
                                             </span>
@@ -268,7 +268,7 @@
                     
                     <h5 style="display:inline-block;">No. of Students: </h5>
                     
-                    <div class="input-group number-spinner">
+                    <div class="input-group number-spinner" id="capacitySpinnerDivRoom1Request1">
                         <span class="input-group-btn data-dwn">
                             <button class="btn btn-default btn-primary" data-dir="dwn"><span class="glyphicon glyphicon-minus"></span></button>
                         </span>
@@ -280,6 +280,7 @@
                 </div>
                 <!--ROOM TYPES RADIO/ SELECT BUTTON CODE-->
                 <div class="well" style="width:100%;">
+                    
                     <table style="width:100%;">
                         <tr>
                             <td>
@@ -320,7 +321,7 @@
                     <div id="parkDivRoom1Request1"></div>
                     <div id="facilitiesTableRoom1Request1"></div>
                     <div id="specialReqsDiv" hidden>
-                        <textarea class="form-control" placeholder="Enter any special requirements here." id="specialReqsRoom1Request1"></textarea>
+                        <textarea class="form-control" placeholder="Enter any special requirements here." id="specialReqsRoom1Request1" maxlength="250"></textarea>
                     </div>
                 </div>
                 <!--END OF RADIO BUTTON CODE-->
@@ -334,11 +335,16 @@
                         <div id="roomsSlctRoom1Request1"></div>
                     </div>
                 </div>
+                <div class="item" style="width:100%">
+                <div class="well" style="width:100%;">
+                    <button type="button" class="btn btn-primary btn-sm" style="display:inline-block; float:right; margin-top:5px;" id="addRoomBtnRoom1Request1">Add Room</button>
+                    </div>
+                </div>
           </div>
-        
+            
     </div>
-        <button type="button" class="btn btn-primary btn-sm" style="display:inline-block; float:right; margin-top:5px;" id="addRoomBtnRequest1">Add Booking</button>
-        
+       
+        <button class="btn btn-success btn-lg" id="sendRequests" style="display:inline-block; float:right; margin-top:5px;" onclick="sendRequest();">Submit Requests</button>
 </div>
 
 
@@ -368,3 +374,9 @@
     You can then choose either a module code or a module title and the system will link the two together.</p>
 </div>
 
+
+<div id="helpTime" title="Booking Specifics">
+    <p>This section is where you can choose days, times, weeks etc of a booking.<br /><br />
+    The room choice box will only show rooms that are not already booked.<br /><br />
+    You can add another room to this request by clicking the <center><button class="btn btn-primary btn-xs">Add Room</button></center>button.</p>
+</div>
