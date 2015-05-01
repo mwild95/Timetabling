@@ -1,4 +1,4 @@
-﻿@model Timetabling06.ModelViews.roomCheckerObject
+@model Timetabling06.ModelViews.roomCheckerObject
 
 @{
     ViewBag.Title = "_roomChecker";
@@ -13,11 +13,11 @@
         @if(Model.rooms !=null){
             foreach (var room in Model.rooms) {
                 <text>
-                rooms[rooms.length] = { roomNumber: '@room.roomNumber', buildingCode: '@room.buildingCode' };
-                </text>
+        rooms[rooms.length] = { roomNumber: '@room.roomNumber', buildingCode: '@room.buildingCode' };
+        </text>
             }
         }
-        
+
         $("#addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1").click(function () {
 
             $("#addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1").hide("slow");
@@ -47,6 +47,12 @@
             $("#roomBuildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2").hide("slow");
             $("#removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2").hide("slow");
         });
+
+        disableSelectOption(@(Model.roomNo), @(Model.RequestNo), 1, $("#roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1 :selected").val());
+        disableSelectOption(@(Model.roomNo), @(Model.RequestNo), 2, $("#roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2 :selected").val());
+        disableSelectOption(@(Model.roomNo), @(Model.RequestNo), 3, $("#roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3 :selected").val());
+
+        
     });
 
 
@@ -63,7 +69,7 @@
                 <div id="roomBuildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1">
                     <div style="display:inline-block;">
 
-                        <select id="buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1" class="form-control" onchange="fillRooms(@Model.roomNo,@Model.RequestNo,$('#buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1').val(),1)" style="width:auto;">
+                        <select id="buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1" class="form-control" onchange="fillRooms(@Model.roomNo,@Model.RequestNo,$('#buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1').val(),1)" style="">
                             @if (Model.buildings == null)
                             {<text>
                                 <option value="empty">No Suitable Buildings</option></text>}
@@ -82,7 +88,7 @@
                     </div>
                     <div style="display:inline-block;">
 
-                        <select id="roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1" class="form-control" style="width:auto;">
+                        <select id="roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1" class="form-control" style="" onchange="disableSelectOption(@(Model.roomNo), @(Model.RequestNo), 1, this.value)">
                             @if (Model.rooms == null)
                             {
                                 <text>
@@ -99,16 +105,23 @@
 
                         </select>
                     </div>
-                    <div style="display:inline-block;">
-
-                        <button type="button" class="btn btn-primary" stlye="float:right" id="addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1"><span class="glyphicon glyphicon-plus"></span></button>
-
+                    <div style="display:inline-block; float:right;">
+                        @if (!(Model.rooms.Count < 2))
+                        {
+                            <text><button type="button" class="btn btn-primary" style="float:right" id="addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1"><span class="glyphicon glyphicon-plus"></span></button>
+                            </text>
+                        }
+                        else { 
+                            <text><button type="button" class="btn btn-primary" style="float:right; display:none;"  id="addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref1"><span class="glyphicon glyphicon-plus"></span></button>
+</text>
+                        }
+                        
                     </div>
                 </div>
                 <div id="roomBuildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2" hidden>
                     <div style="display:inline-block; ">
 
-                        <select id="buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2" class="form-control" style="width:50%;" onchange="fillRooms(@Model.roomNo,@Model.RequestNo,$('#buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2').val(),2)" style="width:auto;">
+                        <select id="buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2" class="form-control" style="" onchange="fillRooms(@Model.roomNo,@Model.RequestNo,$('#buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2').val(),2)" >
                             @if (Model.buildings == null)
                             {<text>
                                 <option value="empty">No Suitable Buildings</option></text>}
@@ -127,7 +140,7 @@
                     </div>
                     <div style="display:inline-block;">
 
-                        <select id="roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2" class="form-control" style="width:auto;">
+                        <select id="roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2" class="form-control" style="" onchange="disableSelectOption(@(Model.roomNo), @(Model.RequestNo), 2, this.value)">
                             @if (Model.rooms == null)
                             {
                                 <text>
@@ -145,15 +158,24 @@
                         </select>
                     </div>
                     <div style="display:inline-block; float:right">
-
-                        <button type="button" class="btn btn-primary" stlye="float:right" id="addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2"><span class="glyphicon glyphicon-plus"></span></button>
-                        <button type="button" class="btn btn-danger" stlye="float:right" id="removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2"><span class="glyphicon glyphicon-remove"></span></button>
+                        @if (!(Model.rooms.Count < 3))
+                        {
+                            <text><button type="button" class="btn btn-primary" style="float:right" id="addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2"><span class="glyphicon glyphicon-plus"></span></button>
+                            <button type="button" class="btn btn-danger" style="float:right" id="removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2"><span class="glyphicon glyphicon-remove"></span></button></text>
+                        }
+                        else
+                        {
+                            <text><button type="button" class="btn btn-primary" style="float:right; display:none;" id="addPrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2"><span class="glyphicon glyphicon-plus"></span></button>
+    <button type="button" class="btn btn-danger" stlye="float:right; display:none;" id="removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref2"><span class="glyphicon glyphicon-remove"></span></button>
+                            </text>
+                        }
+                        
                     </div>
                 </div>
                 <div id="roomBuildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3" hidden>
                     <div style="display:inline-block; ">
 
-                        <select id="buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3" class="form-control" onchange="fillRooms(@Model.roomNo,@Model.RequestNo,$('#buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3').val(),3)" style="width:auto;">
+                        <select id="buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3" class="form-control" onchange="fillRooms(@Model.roomNo,@Model.RequestNo,$('#buildingSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3').val(),3)" style="">
                             @if (Model.buildings == null)
                             {<text>
                                 <option value="empty">No Suitable Buildings</option></text>}
@@ -172,7 +194,7 @@
                     </div>
                     <div style="display:inline-block;">
 
-                        <select id="roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3" class="form-control" style="width:auto;">
+                        <select id="roomSlctRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3" class="form-control" style="" onchange="disableSelectOption(@(Model.roomNo), @(Model.RequestNo), 3, this.value)">
                             @if (Model.rooms == null)
                             {
                                 <text>
@@ -190,11 +212,10 @@
                         </select>
                     </div>
                     <div style="display:inline-block; float:right">
-                        <button type="button" class="btn btn-danger" stlye="float:right" id="removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3"><span class="glyphicon glyphicon-remove"></span></button>
+                        <button type="button" class="btn btn-danger" style="float:right" id="removePrefRoom@(Model.roomNo)Request@(Model.RequestNo)Pref3"><span class="glyphicon glyphicon-remove"></span></button>
                     </div>
                 </div>
             
     
 </div>
        
-@foreach(var booking in Model.bookedRooms){<h2>@booking.buildingCode@booking.roomNumber</h2>}
