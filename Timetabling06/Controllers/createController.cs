@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -54,73 +54,150 @@ namespace Timetabling06.Controllers
             
             
         }
-        public ActionResult Submit(createObjects JSONdata) {
-            request reqData = new request();
-            reqData.moduleCode = JSONdata.requests.moduleCode;
-            reqData.deptCode = JSONdata.requests.deptCode;
-            reqData.priority = JSONdata.requests.priority;
-            reqData.day = JSONdata.requests.day;
-            reqData.start = JSONdata.requests.start;
-            reqData.length = JSONdata.requests.length;
-            reqData.weeks = JSONdata.requests.weeks;
-            reqData.type = JSONdata.requests.type;
-            reqData.otherReqs = JSONdata.requests.otherReqs;
-            reqData.roundID = JSONdata.requests.roundID;
-            reqData.room_request = JSONdata.requests.room_request;
-            
+        public ActionResult Submit(createObjects[] JSONdata) {
+            List<int> requestIDs = new List<int>();
+
+            for (int r = 0; r < JSONdata.Length;r++ ) { 
+                request reqData = new request();
+                reqData.moduleCode = JSONdata[r].requests.moduleCode;
+                reqData.deptCode = JSONdata[r].requests.deptCode;
+                reqData.priority = JSONdata[r].requests.priority;
+                reqData.day = JSONdata[r].requests.day;
+                reqData.start = JSONdata[r].requests.start;
+                reqData.length = JSONdata[r].requests.length;
+                reqData.weeks = JSONdata[r].requests.weeks;
+                if (Convert.ToInt16(JSONdata[r].requests.weeks) == 0)
+                {
+                for (var i = 0; i < JSONdata[r].weeks.Length; i++)
+                {
+                    
+                    weeks_request newWeek = new weeks_request();
+                    newWeek.week = Convert.ToInt16(JSONdata[r].weeks[i]);
+                    reqData.weeks_request.Add(newWeek);
+                }
+            }
+            reqData.type = JSONdata[r].requests.type;
+            reqData.otherReqs = JSONdata[r].requests.otherReqs;
+            reqData.roundID = JSONdata[r].requests.roundID;
+            reqData.room_request = JSONdata[r].requests.room_request;
+            reqData.date = DateTime.Now;
             ViewBag.module = reqData.weeks;
-            if(JSONdata.requests.otherReqs==null){
+            if (JSONdata[r].requests.otherReqs == null)
+            {
                 reqData.otherReqs = "None";
+            }
+            else {
+                reqData.otherReqs = JSONdata[r].requests.otherReqs;
             }
             reqData.sent = 1;
             reqData.status = 0;
             reqData.viewed = 0;
             reqData.booked = 0;
-            if(!(JSONdata.facilities==null)){
-                for (var q = 0; q < JSONdata.facilities.Count(); q++)
+            if (!(JSONdata[r].facilities == null))
+            {
+                for (var q = 0; q < JSONdata[r].facilities.Count(); q++)
                 {
                     facility newFac = new facility();
-                    var tmp = JSONdata.facilities[q];
-                    newFac = db.facilities.Where(r => r.facilityName.Equals(tmp)).First();
+                    var tmp = JSONdata[r].facilities[q];
+                    newFac = db.facilities.Where(a => a.facilityName.Equals(tmp)).First();
                     reqData.facilities.Add(newFac);
                 }
             }
             
-            db.requests.Add(reqData);
-         
-            try
-            {
-                // Your code...
-                // Could also be before try if you know the exception occurs in SaveChanges
-
-                db.SaveChanges();
+                db.requests.Add(reqData);
+            
+                try {
+                    db.SaveChanges();
+                    requestIDs.Add(reqData.requestID);
+                }
+                catch { 
+            
+                }
             }
-            catch (DbEntityValidationException e)
-            {
-                foreach (var eve in e.EntityValidationErrors)
+            if(requestIDs.Count>1){
+            for (var f = 0; f < requestIDs.Count;f++ ) {
+                var requestToEdit = db.requests.Find(requestIDs[f]);
+                if (f == 0)
                 {
-                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
-                    foreach (var ve in eve.ValidationErrors)
+                    requestToEdit.requestLink = requestIDs[f+1];
+                }
+                else {
+                    if (f == requestIDs.Count - 1)
                     {
-                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
-                            ve.PropertyName, ve.ErrorMessage);
+                        requestToEdit.requestLink = requestIDs[0];
+                    }
+                    else {
+                        requestToEdit.requestLink = requestIDs[f + 1];
                     }
                 }
-                throw;
-            }
-            if(Convert.ToInt16(JSONdata.requests.weeks)==0){
-                for (var i = 0; i < JSONdata.weeks.Length; i++) {
-                    weeks_request newWeek = new weeks_request();
-                    newWeek.week = Convert.ToInt16(JSONdata.weeks[i]);
-                    newWeek.requestID = reqData.requestID;
-                    db.weeks_request.Add(newWeek);
+                
+                    db.Entry(requestToEdit).State = EntityState.Modified;
                     db.SaveChanges();
+                    
+                
+            }
+        }
+            
+
+
+
+            int count = 0;
+            foreach(var requestID in requestIDs){
+                var DBrequests = db.requests.Find(requestID);
+                JSONdata[count].requests = DBrequests;
+                count++;
+            }
+            var allAvailable = true;
+           /* if(JSONdata[0].requests.round.roundNo==0){
+                //this is an adhoc request, therefore needs to be booked/rejected immediately.
+                for (var v = 0; v < JSONdata.Length;v++ ) {
+                    var checkIfBooked = db.requests.Where(y=>y.booked==JSONdata[v].requests.booked);
+                    checkIfBooked = checkIfBooked.Where(y=>y.start==JSONdata[v].requests.start);
+                    checkIfBooked = checkIfBooked.WHere
+                }
+            }*/
+            /*var proposedRequest = db.requests.Include(r => r.rooms);
+            proposedRequest = proposedRequest.Where(r=>r.booked==1);
+            proposedRequest = proposedRequest.Where(r => r.roundID==(JSONdata.roundID));
+            proposedRequest = proposedRequest.Where(r => r.day==JSONdata.day);
+            proposedRequest = proposedRequest.Where(s => s.start < JSONdata.start + JSONdata.length && s.start + s.length > JSONdata.start);
+            int[] standardWeeks = new int[12] {1,2,3,4,5,6,7,8,9,10,11,12};
+            if (JSONdata.weeks.Length == 0)
+            {
+
+            }
+            else {
+                var containsStandard = standardWeeks.Intersect(JSONdata.weeks);
+                if (containsStandard.Count() != 0)
+                {
+                    proposedRequest = proposedRequest.Where(r => r.weeks_request.Any(f => JSONdata.weeks.Contains(f.week)) || r.weeks == 1.ToString());
+                }
+                else
+                {
+                    proposedRequest = proposedRequest.Where(r => r.weeks_request.Any(f => JSONdata.weeks.Contains(f.week)));
                 }
             }
+            
 
             
-            return View();
+
+
+
+            var bookedRooms = proposedRequest.Select(r => r.rooms);
+            List<room> bookedRoomsList = new List<room>();
+            foreach(var room in bookedRooms){
+                bookedRoomsList.Add(room.First());
+            }*/
+
+            Receipt receiptDetails = new Receipt();
+            receiptDetails.moduleCode = JSONdata[0].requests.moduleCode;
+            receiptDetails.moduleTitle = db.modules.Find(JSONdata[0].requests.moduleCode,JSONdata[0].requests.deptCode).moduleTitle;
+            receiptDetails.department = JSONdata[0].requests.deptCode;
+            receiptDetails.submittedIn = db.rounds.Find(JSONdata[0].requests.roundID);
+            receiptDetails.requests = JSONdata;
+
+            
+            return View(receiptDetails);
         }
 
 
@@ -140,28 +217,53 @@ namespace Timetabling06.Controllers
             {
                 for (var i = 0; i < JSONdata.facilities.Length; i++)
                 {
-                    rooms = rooms.Where(r => r.facilities.Any(f => f.facilityName==JSONdata.facilities[i]));
+                    var tmp = JSONdata.facilities[i];
+                    rooms = rooms.Where(r => r.facilities.Any(f => f.facilityName==tmp));
 
                 }
             }
 
             var proposedRequest = db.requests.Include(r => r.rooms);
             proposedRequest = proposedRequest.Where(r=>r.booked==1);
-            proposedRequest = proposedRequest.Where(r => r.roundID.Equals(JSONdata.roundID));
+            proposedRequest = proposedRequest.Where(r => r.roundID==(JSONdata.roundID));
             proposedRequest = proposedRequest.Where(r => r.day==JSONdata.day);
             proposedRequest = proposedRequest.Where(s => s.start < JSONdata.start + JSONdata.length && s.start + s.length > JSONdata.start);
             int[] standardWeeks = new int[12] {1,2,3,4,5,6,7,8,9,10,11,12};
-            var containsStandard = standardWeeks.Intersect(JSONdata.weeks);
-            if (containsStandard.Count()!=0)
+            if (JSONdata.weeks.Length == 0)
             {
-                proposedRequest = proposedRequest.Where(r => r.weeks_request.Any(f => JSONdata.weeks.Contains(f.week)) || r.weeks==1.ToString());
+
             }
             else {
-                proposedRequest = proposedRequest.Where(r => r.weeks_request.Any(f => JSONdata.weeks.Contains(f.week)));
+                var containsStandard = standardWeeks.Intersect(JSONdata.weeks);
+                if (containsStandard.Count() != 0)
+                {
+                    proposedRequest = proposedRequest.Where(r => r.weeks_request.Any(f => JSONdata.weeks.Contains(f.week)) || r.weeks == 1.ToString());
+                }
+                else
+                {
+                    proposedRequest = proposedRequest.Where(r => r.weeks_request.Any(f => JSONdata.weeks.Contains(f.week)));
+                }
+            }
+            
+
+            
+
+
+
+            var bookedRooms = proposedRequest.Select(r => r.rooms);
+            List<room> bookedRoomsList = new List<room>();
+            foreach(var room in bookedRooms){
+                bookedRoomsList.Add(room.First());
+            }
+            
+            List<room> suitableRoomsList = rooms.ToList();
+
+            var complementList = new List<room>(suitableRoomsList);
+            foreach (var bookedRoom in bookedRoomsList) {
+                complementList.Remove(bookedRoom);
             }
 
-            var bookedRooms = proposedRequest.SelectMany(r => r.rooms);
-            var bookedRoomsList = bookedRooms.ToList();
+
 
             var deptRooms = db.rooms.Include(r => r.building).Include(r => r.facilities).Where(r => r.belongsTo==JSONdata.deptCode);
 
@@ -170,7 +272,7 @@ namespace Timetabling06.Controllers
             suitableRooms.roomNo = JSONdata.roomNo;
             suitableRooms.RequestNo = JSONdata.RequestNo;
             if(rooms.ToList().Count() >0){
-                suitableRooms.rooms = rooms.ToList();
+                suitableRooms.rooms = complementList.ToList();
                 var buildings = rooms.Select(r => r.building).Distinct();
                 suitableRooms.buildings = buildings.ToList();
             }
