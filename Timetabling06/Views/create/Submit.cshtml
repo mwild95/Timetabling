@@ -1,7 +1,449 @@
-﻿
+@model Timetabling06.ModelViews.Receipt
 @{
     ViewBag.Title = "Submit";
 }
+<script type="text/javascript">
+    $(document).ready(function () {
 
-<h2>@ViewBag.module</h2>
 
+        @foreach(var room in Model.requests){
+            <text>
+        $("#requestInfo@(room.requests.requestID)").dialog({
+            autoOpen: false,
+            height: 'auto',
+            width:'auto',
+            show: {
+                effect: "blind",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 1000
+            }
+        });
+        $("#request@(room.requests.requestID)").click(function () {
+            $("#requestInfo@(room.requests.requestID)").dialog("open");
+        });
+        </text>
+    }
+
+
+
+    });
+</script>
+<div class="container" style="height:72vh" id="containsEverything">
+    <div class="item"><div class="well">
+                          <h2>Your Request Details</h2><br />
+                           <h5>Your request was submittied in <b>
+    @if (Model.submittedIn.roundNo == 0)
+    {
+        @: AdHoc Round - Semester @Model.submittedIn.semester -
+                                        if (Model.submittedIn.semester == 1)
+                                        {
+                                            @Model.submittedIn.year@:/@Model.submittedIn.year+1
+                                        }
+                                        else
+                                        {
+                                            var firstYear = Model.submittedIn.year - 1;
+                                            @firstYear@:/@Model.submittedIn.year
+                                        }
+    }
+    else
+    {
+
+        @: Round @Model.submittedIn.roundNo - Semester @Model.submittedIn.semester
+                                        if (Model.submittedIn.semester == 1)
+                                        {
+                                            @Model.submittedIn.year@:/@Model.submittedIn.year+1
+                                        }
+                                        else
+                                        {
+                                            var firstYear = Model.submittedIn.year - 1;
+                                            @firstYear@:/@Model.submittedIn.year
+                                        }
+
+    }
+</b></h5>
+                          <h5>Your request if for <b>@Model.department@Model.moduleCode - @Model.requests.First().requests.module.moduleTitle</b></h5>
+                          <table class="table table-hover">
+                              <tr>
+                                  <th>Room #</th>
+                                  <th>Day and Time</th>
+                                  <th>Room Preference 1</th>
+                                  <th>Room Preference 2</th>
+                                  <th>Room Preference 3</th>
+                                  <th>Current Status</th>
+                                  <th>More Info</th>
+                              </tr>
+                              @{var roomCount=1;}
+                              @foreach (var room in @Model.requests)
+                              {
+                                  <text>
+                                      <tr>
+                                          <td>@(roomCount)</td>
+                                          @{roomCount++;}
+                                          <td>
+                                              @{switch (room.requests.day.ToString())
+                                              {
+                                                  case "1":
+                                                      <text>Monday </text>
+                                                      break;
+                                                  case "2":
+                                                  <text>Tuesday </text>
+                                                      break;
+                                                  case "3":
+                                                  <text>Wednesday </text>
+                                                      break;
+                                                  case "4":
+                                                  <text>Thursday </text>
+                                                      break;
+                                                  case "5":
+                                                  <text>Friday </text>
+                                                      break;
+
+                                              }
+                                              }
+                                          
+                                              @{
+                                                  switch(room.requests.start.ToString())
+                                                  { 
+                                                      case "1":
+                                                          <text>from 09:00</text>
+                                                          break;
+                                                      case "2":
+                                                    <text>from 10:00</text>
+                                                          break;
+                                                      case "3":
+                                                    <text>from 11:00</text>
+                                                          break;
+                                                      case "4":
+                                                    <text>from 12:00</text>
+                                                          break;
+                                                      case "5":
+                                                    <text>from 13:00</text>
+                                                          break;
+                                                      case "6":
+                                                    <text>from 14:00</text>
+                                                          break;
+                                                      case "7":
+                                                    <text>from 15:00</text>
+                                                          break;
+                                                      case "8":
+                                                    <text>from 16:00</text>
+                                                          break;
+                                                      case "9":
+                                                    <text>from 17:00</text>
+                                                          break;
+                                                  }
+}
+                                         @{
+                                             var endTime = room.requests.start+room.requests.length;
+                                             switch (endTime.ToString())
+                                            { 
+                                                 case "2":
+                                                     <text> - 10:00</text>
+                                                    break;
+                                                 case "3":
+                                                <text> - 11:00</text>
+                                                    break;
+                                                 case "4":
+                                                <text> - 12:00</text>
+                                                    break;
+                                                 case "5":
+                                                <text> - 13:00</text>
+                                                    break;
+                                                 case "6":
+                                                <text> - 14:00</text>
+                                                    break;
+                                                 case "7":
+                                                <text> - 15:00</text>
+                                                    break;
+                                                 case "8":
+                                                <text> - 16:00</text>
+                                                    break;
+                                                 case "9":
+                                                <text> - 17:00</text>
+                                                    break;
+                                                 case "10":
+                                                <text> - 18:00</text>
+                                                    break;
+                                                    
+                                            }
+}                                           </td>
+                                          @if(room.requests.room_request.Count()==3){
+                                                foreach (var roomPref in room.requests.room_request)
+                                                {
+                                                    <text>
+                                                        <td>@(roomPref.buildingCode)@(roomPref.roomNumber) - @(roomPref.room.building.name)</td></text>
+                                                }
+                                          }
+                                          else { 
+                                                if(room.requests.room_request.Count()==2){
+                                                    foreach (var roomPref in room.requests.room_request)
+                                                    {
+                                                        <text>
+                                                            <td>@(roomPref.buildingCode)@(roomPref.roomNumber)</td></text>
+                                                    }
+                                                    <text><td>N/A</td></text>
+                                                }
+                                                else { 
+                                                    foreach (var roomPref in room.requests.room_request)
+                                                    {
+                                                        <text>
+                                                            <td>@(roomPref.buildingCode)@(roomPref.roomNumber)</td></text>
+                                                    }
+                                                        <text><td>N/A</td><td>N/A</td></text>
+                                                }
+                                          }
+                                          
+                                          <td>
+                                              @if(room.requests.sent==1){
+                                                if(room.requests.status==1){
+                                                    if(room.requests.booked==1){
+                                                        <text>Booking Accepted</text>
+                                                    }
+                                                    else { 
+                                                        <text>Booking Declined</text>
+                                                    }
+                                                }
+                                                else { 
+                                                    <text>Pending</text>
+                                                }
+                                              }
+                                              else { 
+                                                <text>Not Sent</text>
+                                              }
+                                          </td>
+                                          <td>
+                                              <center><button type="button" class="btn btn-info btn-sm" style="display:inline-block; float:right;" id="request@(room.requests.requestID)"><span class="glyphicon glyphicon-zoom-in" style="font-size:1.5em;"></span></button></center>
+                                          </td>
+                                      </tr>
+                                  </text>
+                              }
+                          </table>
+        </div>
+    </div>
+    
+</div>
+
+@foreach(var room in Model.requests){
+    <text>
+    <div id="requestInfo@(room.requests.requestID)" title="More info - @(room.requests.deptCode) @(room.requests.moduleCode)">
+        <div class="item">
+            <div class="well">
+                <table class="table table-hover" style="text-align:center">
+                    <tr>
+                        <th>
+                            Priority?
+                        </th>
+                        <th>
+                            Day
+                        </th>
+                        <th>Start</th>
+                        <th>Length</th>
+                        <th>Weeks</th>
+                        <th>No. of Students</th>
+                        <th>Room Type</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @if (room.requests.priority == 1)
+                            {
+                                <text><span class="glyphicon glyphicon-ok"></span></text>
+                            }
+                            else
+                            {
+                                <text><span class="glyphicon glyphicon-remove"></span></text>
+                            }
+                        </td>
+                        <td>
+                            @{switch (room.requests.day.ToString())
+                            {
+                                case "1":
+                                    <text>Monday - </text>
+                                    break;
+                                case "2":
+                                <text>Tuesday - </text>
+                                    break;
+                                case "3":
+                                <text>Wednesday - </text>
+                                    break;
+                                case "4":
+                                <text>Thursday - </text>
+                                    break;
+                                case "5":
+                                <text>Friday - </text>
+                                    break;
+
+                            }
+                        }
+                    </td>
+                    <td>
+                        @{
+    switch (room.requests.start.ToString())
+    {
+        case "1":
+            <text>09:00</text>
+            break;
+        case "2":
+            <text>10:00</text>
+            break;
+        case "3":
+            <text>11:00</text>
+            break;
+        case "4":
+            <text>12:00</text>
+            break;
+        case "5":
+            <text>13:00</text>
+            break;
+        case "6":
+            <text>14:00</text>
+            break;
+        case "7":
+            <text>15:00</text>
+            break;
+        case "8":
+            <text>16:00</text>
+            break;
+        case "9":
+            <text>17:00</text>
+            break;
+    }
+                    }
+                </td>
+                <td>@(room.requests.length) Hour(s)</td>
+                <td>
+                    @if (Int32.Parse(room.requests.weeks) == 1)
+                    {
+                        <text>1-12</text>
+                    }
+                    else
+                    {
+                        List<int> weeks = new List<int>();
+                        foreach (var item in room.requests.weeks_request)
+                        {
+                            weeks.Add(item.week);
+
+                        }
+                        var output = "";
+                        output += weeks[0];
+                        for (var i = 1; i < weeks.Count; i++)
+                        {
+                            if (!(weeks[i] == weeks[i - 1] + 1))
+                            {
+                                output += ",";
+                                output += weeks[i];
+                            }
+                            else
+                            {
+                                if (i == weeks.Count - 1)
+                                {
+                                    output += "-";
+                                    output += weeks[i];
+                                }
+                                else
+                                {
+                                    var count = 0;
+                                    for (var t = i; t < weeks.Count; t++)
+                                    {
+                                        if (weeks[t] == weeks[i] + count)
+                                        {
+                                            count++;
+                                        }
+                                        else
+                                        {
+                                            output += "-";
+                                            output += weeks[t - 1];
+                                            i = t - 1;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        <text>@(output)</text>
+                    }
+
+
+                </td>
+                <td>@(room.requests.room_request.First().class_size)</td>
+                <td>@(room.requests.type)</td>
+            </tr>
+            </table>
+            </div>
+            <div class="item">
+                <div class="well">
+                    <table class="table table-hover table-condensed">
+                        <tr>
+                            <th colspan="2">Facilities Requested</th>
+                        </tr>
+                        @{int facCount = 1;}
+                        @if (room.facilities != null)
+                        {
+                            if (room.facilities.Count() > 1)
+                            {
+                                foreach (var facility in room.facilities)
+                                {
+                                    if (facCount == 1)
+                                    {
+                                        <text>
+                                            <tr>
+                                                <td>@(facility)</td>
+                                        </text>
+                                        facCount = 0;
+                                    }
+                                    else
+                                    {
+
+                                        if (facCount == 0)
+                                        {
+                                            <td>@(facility)</td>
+                                            
+                                        @:</tr>
+
+
+
+
+
+
+
+
+                                            facCount = 1;
+                                        }
+                                    }
+
+                                }
+                            }
+                            else
+                            {
+                                if (room.facilities.Count() == 1)
+                                {
+                                    foreach (var facility in room.facilities)
+                                    {
+                                        <text>
+                                            <tr>
+                                                <td>@(facility)</td>
+                                            </tr>
+                                        </text>
+                                    }
+                                }
+                            }
+                        }else{
+                            <text><tr><td>No facilities specified</td></tr></text>
+                        }
+                        
+
+</table>
+                </div>
+            </div>
+            <div class="item">
+                <div class="well">
+                    <textarea class="form-control" rows="3" readonly style="resize:none;">@(room.requests.otherReqs)</textarea>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</text>
+}
